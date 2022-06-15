@@ -1,7 +1,8 @@
 export const Checker = (checkerColor) => {
 
     let checkerElement = document.createElement('img');
-    checkerElement.src = `../assets/${checkerColor}-checker.png`;
+    checkerElement.src = require(`../assets/${checkerColor}-checker.png`);
+    console.log(checkerElement.src + ' first setup');
 
     const getColor = () => {
         return checkerColor;
@@ -11,5 +12,8 @@ export const Checker = (checkerColor) => {
         return checkerElement;
     }
 
-    return { getColor, getElement };
+    return {
+        getColor,
+        getElement
+    };
 };
