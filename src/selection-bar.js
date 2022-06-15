@@ -6,9 +6,9 @@ import * as Utilities from '../src/util.js'
 // control bar and button activate/deactivate mode
 
 export const SelectionBar = (() => {
-//this is an example of IIFE (Immediately Invoked Function Expression)
+    //this is an example of IIFE (Immediately Invoked Function Expression)
     let selectionBoxes = undefined;
-    let currentSelection;
+    let currentColumnSelection;
     let lastSelection;
 
     const gameBoardSelectorBar = document.createElement('div');
@@ -29,6 +29,32 @@ export const SelectionBar = (() => {
     const submitMoveButton = document.createElement('button');
     submitMoveButton.textContent = 'Submit Move';
     submitMoveButton.id = 'submit-move';
+    submitMoveButton.classList.add('submit-move-inactive');
+
+    const _submitMove = () => {
+        _clearImagesFromSelectionBoxes();
+        console.log('Move submitted to gamestate: column ' + currentColumnSelection);
+        GameState.setChosenColumnForMove(currentColumnSelection);
+        _setSubmitButtonState(false);
+    };
+
+    const _setSubmitButtonState = (active) => {
+        _setSubmitButtonEvent(active);
+    };
+
+    const _setSubmitButtonEvent = (active) => {
+
+        if (active) {
+            submitMoveButton.addEventListener('click', _submitMove);
+            submitMoveButton.classList.remove('submit-move-inactive');
+            submitMoveButton.classList.add('submit-move-active');
+        } else {
+            submitMoveButton.removeEventListener('click', _submitMove);
+            submitMoveButton.classList.add('submit-move-inactive');
+            submitMoveButton.classList.remove('submit-move-active');
+        }
+
+    };
 
     const _addCheckerImageToBox = (e) => {//p
         e.target.appendChild(GameState.getCurrentPlayer().getCheckerElement());
@@ -38,7 +64,7 @@ export const SelectionBar = (() => {
         Utilities.removeAllChildNodes(e.target);
     };
 
-    const _toggleCheckerImageOnHoverEvent = (activate, targetElement) => {//p
+    const _setCheckerImageOnHoverEvent = (activate, targetElement) => {//p
 
         if (activate) {
             targetElement.addEventListener('mouseenter', _addCheckerImageToBox);
@@ -50,10 +76,10 @@ export const SelectionBar = (() => {
 
     };
 
-    const _toggleAllCheckerImageOnHoverEvents = (activate, array) => {//p
+    const _setAllCheckerImageOnHoverEvents = (activate, array) => {//p
 
         array.forEach(element => {
-            _toggleCheckerImageOnHoverEvent(activate, element);
+            _setCheckerImageOnHoverEvent(activate, element);
         });
 
     };
@@ -67,32 +93,34 @@ export const SelectionBar = (() => {
 
     const _selectBox = (e) => {
 
-        if (currentSelection === e.target.parentNode.getAttribute('data-col-select')) {
+        if (currentColumnSelection === e.target.parentNode.getAttribute('data-col-select')) {
 
-            console.log('Same box selected');
+            //console.log('Same box selected');
             return;
 
-        } else if (!currentSelection) {
+        } else if (!currentColumnSelection) {
 
             _addImageAndSetSelection();
-            console.log('First initialization selection now: '+ currentSelection);
+            //console.log('First initialization selection now: ' + currentColumnSelection);
             return;
 
         } else {
 
-            console.log('Last selection is: ' + currentSelection + ' which will be deselected');
-            _deselectBox(currentSelection);
+            //console.log('Last selection is: ' + currentColumnSelection + ' which will be deselected');
+            _deselectBox(currentColumnSelection);
             _addImageAndSetSelection();
-            console.log('Selection is: ' + currentSelection);
+            //console.log('Selection is: ' + currentColumnSelection);
+            
         }
 
         function _addImageAndSetSelection() {
 
-            currentSelection = e.target.parentNode.getAttribute('data-col-select');
-            let selectedNode = document.querySelector(`div[data-col-select="${currentSelection}"]`);
-            _toggleCheckerImageOnHoverEvent(false, selectedNode);
+            currentColumnSelection = e.target.parentNode.getAttribute('data-col-select');
+            let selectedNode = document.querySelector(`div[data-col-select="${currentColumnSelection}"]`);
+            _setCheckerImageOnHoverEvent(false, selectedNode);
             Utilities.removeAllChildNodes(selectedNode);
             selectedNode.appendChild(GameState.getCurrentPlayer().getCheckerElement());
+            _setSubmitButtonState(true);
         }
 
     };
@@ -103,10 +131,10 @@ export const SelectionBar = (() => {
             return;
         }
         Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
-        _toggleCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
+        _setCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
     };
 
-    const _toggleClickAndSelectBoxEvent = (activate, targetElement) => {
+    const _setClickAndSelectBoxEvent = (activate, targetElement) => {
 
         if (activate) {
             targetElement.addEventListener('click', _selectBox);
@@ -116,22 +144,27 @@ export const SelectionBar = (() => {
 
     };
 
-    const _toggleAllClickAndSelectBoxEvents = (activate) => {
+    const _setAllClickAndSelectBoxEvents = (activate) => {
 
         selectionBoxes.forEach(element => {
-            _toggleClickAndSelectBoxEvent(activate, element);
+            _setClickAndSelectBoxEvent(activate, element);
         });
 
     };
 
-    const deactivateSelectionBar = () => {
+    const setSelectionBarState = (active) => {
 
-        _toggleAllCheckerImageOnHoverEvents(false, selectionBoxes);
-        //toggle the click and keep function off
+        _setAllCheckerImageOnHoverEvents(active, selectionBoxes);
+        _setSubmitButtonState(false);
+        _setAllClickAndSelectBoxEvents(active);
+        _clearImagesFromSelectionBoxes();
+
+    };
+
+    const _clearImagesFromSelectionBoxes = () => {
         selectionBoxes.forEach(element => {
             Utilities.removeAllChildNodes(element);
         });
-
     };
 
     const initializeAndAddSelectionBarToDOM = () => {
@@ -139,13 +172,12 @@ export const SelectionBar = (() => {
         document.body.appendChild(submitMoveButton);
         document.body.appendChild(gameBoardSelectorBar);
         _defineSelectionBoxes();
-        _toggleAllCheckerImageOnHoverEvents(true, selectionBoxes);
-        _toggleAllClickAndSelectBoxEvents(true);
+        setSelectionBarState(true);
     };
 
     return {
         initializeAndAddSelectionBarToDOM,
-        deactivateSelectionBar
+        setSelectionBarState,
     };
 
 })();
