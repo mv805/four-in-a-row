@@ -2,20 +2,24 @@ import { Checker } from '../src/checker.js';
 
 export const Player = (colorOfChecker) => {
 
-    let gamePiece = Checker(colorOfChecker);
+    let playerChecker = Checker(colorOfChecker);
     let lastMove = undefined;
 
     const getLastMove = () => {
         return lastMove;
     };
 
-    const getColor = () => {
-        return gamePiece.getColor();
-    };
+    const getCheckerElement = () => {
+        return playerChecker.getElement();
+    }
 
     const setLastMove = (row, column) => {
         lastMove = [row, column];
     };
 
-    return { getLastMove, getColor, setLastMove };
+    return {
+        getLastMove,
+        setLastMove,
+        getCheckerElement,
+    };
 };

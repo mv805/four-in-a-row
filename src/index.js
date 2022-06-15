@@ -1,22 +1,13 @@
+/* all the grid squares are referred to as 'boxes' 
+* all the game pieces/pucks are referred to as 'checkers'
+*/
+
 import './style.css';
 import * as display from './display.js';
+import { SelectionBar } from '../src/selection-bar.js';
 
-display.initialDisplaySetup();
-// let currentPlayer = 'red';
-// let checker = document.createElement('img');
-// checker.src = `/assets/${currentPlayer}-checker.png`;
+const header = document.createElement('h1');
+header.textContent = 'Four in a Row!';
+document.body.appendChild(header);
 
-// let testDiv = document.querySelector('div[data-col="1"]');
-
-// function displayImageOnHover(targetElement, imageElement){
-
-//     targetElement.addEventListener('mouseenter', e => {
-//         targetElement.appendChild(imageElement);
-//     });
-
-//     targetElement.addEventListener('mouseleave', e => {
-//         targetElement.removeChild(imageElement);
-//     });
-// }
-
-// displayImageOnHover(testDiv, checker);
+SelectionBar.initializeSelectionBar();
