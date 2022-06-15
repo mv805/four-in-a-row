@@ -1,14 +1,12 @@
-//this is an IIFE (Immediately Invoked Function Expression)
 import { GameState } from '../src/game-state.js';
 import * as Utilities from '../src/util.js'
 // SelectionBar:
-// take selection from current player
-// submit a move
-// control bar and button active mode
-// submit button 
+// [ok] take selection from current player, highlight and select
+// submit a move button
+// control bar and button activate/deactivate mode
 
 export const SelectionBar = (() => {
-
+//this is an example of IIFE (Immediately Invoked Function Expression)
     let selectionBoxes = undefined;
     let currentSelection;
     let lastSelection;
@@ -65,29 +63,43 @@ export const SelectionBar = (() => {
 
     const _selectBox = (e) => {
 
-        if (currentSelection === e.target.parentNode['data-col-select']) {
+        if (currentSelection === e.target.parentNode.getAttribute('data-col-select')) {
+
+            console.log('Same box selected');
             return;
+
+        } else if (!currentSelection) {
+
+            _addImageAndSetSelection();
+            console.log('First initialization selection now: '+ currentSelection);
+            return;
+
         } else {
-            currentSelection = e.target.parentNode['data-col-select'];
-            console.log('Current selection is: ' + currentSelection);
+
+            console.log('Last selection is: ' + currentSelection + ' which will be deselected');
+            _deselectBox(currentSelection);
+            _addImageAndSetSelection();
+            console.log('Selection is: ' + currentSelection);
         }
 
-        //_deselectBox(currentSelection);
-        //_toggleCheckerImageOnHoverEvent(false, e.target.parentNode);
-        //console.log(GameState.getCurrentPlayer().getCheckerElement());
-        //console.log(document.querySelector('div[data-col-select="0"]'));
+        function _addImageAndSetSelection() {
 
-        // Utilities.toggleImageInElement(document.querySelector('div[data-col-select="0"]'), GameState.getCurrentPlayer().getCheckerElement(), true);
-        // currentSelection = e.target.parentNode;
-        //let div = document.createElement('div');
+            currentSelection = e.target.parentNode.getAttribute('data-col-select');
+            let selectedNode = document.querySelector(`div[data-col-select="${currentSelection}"]`);
+            _toggleCheckerImageOnHoverEvent(false, selectedNode);
+            Utilities.removeAllChildNodes(selectedNode);
+            selectedNode.appendChild(GameState.getCurrentPlayer().getCheckerElement());
+        }
+
     };
 
     const _deselectBox = (boxDataKeyToDeselect) => {
         if (!boxDataKeyToDeselect) {
+            console.log('selection not yet defined');
             return;
         }
-        Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${boxDataKeyToDeselect} "]`));
-        _toggleCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${boxDataKeyToDeselect} "]`));
+        Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
+        _toggleCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
     };
 
     const _toggleClickAndSelectBoxEvent = (activate, targetElement) => {
@@ -123,7 +135,7 @@ export const SelectionBar = (() => {
         document.body.appendChild(gameBoardSelectorBar);
         _defineSelectionBoxes();
         _toggleAllCheckerImageOnHoverEvents(true);
-        //_toggleAllClickAndSelectBoxEvents(true);
+        _toggleAllClickAndSelectBoxEvents(true);
     };
 
     return {
