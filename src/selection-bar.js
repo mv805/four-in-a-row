@@ -26,6 +26,10 @@ export const SelectionBar = (() => {
     </div>
     `;
 
+    const submitMoveButton = document.createElement('button');
+    submitMoveButton.textContent = 'Submit Move';
+    submitMoveButton.id = 'submit-move';
+
     const _addCheckerImageToBox = (e) => {
         e.target.appendChild(GameState.getCurrentPlayer().getCheckerElement());
     };
@@ -130,8 +134,9 @@ export const SelectionBar = (() => {
 
     };
 
-    const initializeSelectionBar = () => {
+    const initializeAndAddSelectionBarToDOM = () => {
         //initialization only performed a single time for the first page load
+        document.body.appendChild(submitMoveButton);
         document.body.appendChild(gameBoardSelectorBar);
         _defineSelectionBoxes();
         _toggleAllCheckerImageOnHoverEvents(true);
@@ -139,7 +144,7 @@ export const SelectionBar = (() => {
     };
 
     return {
-        initializeSelectionBar,
+        initializeAndAddSelectionBarToDOM,
         deactivateSelectionBar
     };
 
