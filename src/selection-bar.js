@@ -29,21 +29,21 @@ export const SelectionBar = (() => {
     `;
 
     const _addCheckerImageToBox = (e) => {
-        Utilities.toggleImageInElement(e.target, GameState.getCurrentPlayer().getCheckerElement(), true);
+        e.target.appendChild(GameState.getCurrentPlayer().getCheckerElement());
     };
 
-    const _removeCheckerImageToBox = (e) => {
-        Utilities.toggleImageInElement(e.target, GameState.getCurrentPlayer().getCheckerElement(), false);
+    const _removeCheckerImageFromBox = (e) => {
+        Utilities.removeAllChildNodes(e.target);
     };
 
     const _toggleCheckerImageOnHoverEvent = (activate, targetElement) => {
 
         if (activate) {
             targetElement.addEventListener('mouseenter', _addCheckerImageToBox);
-            targetElement.addEventListener('mouseleave', _removeCheckerImageToBox);
+            targetElement.addEventListener('mouseleave', _removeCheckerImageFromBox);
         } else if (!activate) {
             targetElement.removeEventListener('mouseenter', _addCheckerImageToBox);
-            targetElement.removeEventListener('mouseleave', _removeCheckerImageToBox);
+            targetElement.removeEventListener('mouseleave', _removeCheckerImageFromBox);
         };
 
     };
@@ -59,39 +59,35 @@ export const SelectionBar = (() => {
     const _defineSelectionBoxes = () => {
 
         selectionBoxes = [...document.querySelectorAll('[data-col-select]')];
+        //console.log(selectionBoxes);
 
     };
 
     const _selectBox = (e) => {
 
-        // if (currentSelection === e.target.parentNode) {
-        //     return;
-        // } else {
-        //     currentSelection = e.target.parentNode;
-        // }
-        //console.log(currentSelection +" is the selection");
-        
+        if (currentSelection === e.target.parentNode['data-col-select']) {
+            return;
+        } else {
+            currentSelection = e.target.parentNode['data-col-select'];
+            console.log('Current selection is: ' + currentSelection);
+        }
+
         //_deselectBox(currentSelection);
         //_toggleCheckerImageOnHoverEvent(false, e.target.parentNode);
         //console.log(GameState.getCurrentPlayer().getCheckerElement());
         //console.log(document.querySelector('div[data-col-select="0"]'));
-        let clonedNode = GameState.getCurrentPlayer().getCheckerElement().clonedNode(true);
-        console.log(clonedNode + " cloned node");
+
         // Utilities.toggleImageInElement(document.querySelector('div[data-col-select="0"]'), GameState.getCurrentPlayer().getCheckerElement(), true);
         // currentSelection = e.target.parentNode;
         //let div = document.createElement('div');
-        document.querySelector('div[data-col-select="0"]').appendChild(GameState.getCurrentPlayer().getCheckerElement());
-        console.log(GameState.getCurrentPlayer().getCheckerElement());
-
     };
 
-    const _deselectBox = (boxToDeselect) => {
-        if (!boxToDeselect){
+    const _deselectBox = (boxDataKeyToDeselect) => {
+        if (!boxDataKeyToDeselect) {
             return;
         }
-
-        Utilities.toggleImageInElement(boxToDeselect, GameState.getCurrentPlayer().getCheckerElement(), false);
-        _toggleCheckerImageOnHoverEvent(true, boxToDeselect);
+        Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${boxDataKeyToDeselect} "]`));
+        _toggleCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${boxDataKeyToDeselect} "]`));
     };
 
     const _toggleClickAndSelectBoxEvent = (activate, targetElement) => {
@@ -127,7 +123,7 @@ export const SelectionBar = (() => {
         document.body.appendChild(gameBoardSelectorBar);
         _defineSelectionBoxes();
         _toggleAllCheckerImageOnHoverEvents(true);
-        _toggleAllClickAndSelectBoxEvents(true);
+        //_toggleAllClickAndSelectBoxEvents(true);
     };
 
     return {
