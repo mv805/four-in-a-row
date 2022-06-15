@@ -1,12 +1,16 @@
-import { Player } from '../src/player.js';
+import { Checker } from '../src/checker.js';
 
-describe('Player object behavior', () => {
+describe('Checker object behavior', () => {
 
-    let player = Player('yellow');
+    let checker = Checker('yellow');
+    let testElement = checker.getElement();
 
-    test('Set and get a player move', () => {
-        player.setLastMove(0, 1);
-        expect(player.getLastMove()).toEqual([0, 1]);
+    test('Get checker color', () => {
+        expect(checker.getColor()).toBe('yellow');
+    });
+
+    test('Returned element is generated', () => {
+        expect(testElement.outerHTML).toBe('<img src=\"\">');
     });
 
 });
