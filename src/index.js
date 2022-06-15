@@ -7,7 +7,7 @@ import * as display from './display.js';
 import { SelectionBar } from '../src/selection-bar.js';
 
 const header = document.createElement('h1');
-header.textContent = 'Four in a Row!';
+header.textContent = 'FOUR IN A ROW!';
 document.body.appendChild(header);
 
 SelectionBar.initializeAndAddSelectionBarToDOM();
