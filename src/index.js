@@ -10,4 +10,4 @@ const header = document.createElement('h1');
 header.textContent = 'Four in a Row!';
 document.body.appendChild(header);
 
-SelectionBar.initializeSelectionBar();
+SelectionBar.initializeAndAddSelectionBarToDOM();
