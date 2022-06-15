@@ -35,12 +35,12 @@ export const SelectionBar = (() => {
         _clearImagesFromSelectionBoxes();
         console.log('Move submitted to gamestate: column ' + currentColumnSelection);
         GameState.setChosenColumnForMove(currentColumnSelection);
-        _setSubmitButtonState(false);
+        _setSubmitButtonEvent(false);//_setSubmitButtonState(false);
     };
 
-    const _setSubmitButtonState = (active) => {
-        _setSubmitButtonEvent(active);
-    };
+    // const _setSubmitButtonState = (active) => {
+    //     _setSubmitButtonEvent(active);
+    // };
 
     const _setSubmitButtonEvent = (active) => {
 
@@ -76,20 +76,20 @@ export const SelectionBar = (() => {
 
     };
 
-    const _setAllCheckerImageOnHoverEvents = (activate, array) => {//p
+    // const _setAllCheckerImageOnHoverEvents = (activate, array) => {//p
 
-        array.forEach(element => {
-            _setCheckerImageOnHoverEvent(activate, element);
-        });
+    //     array.forEach(element => {
+    //         _setCheckerImageOnHoverEvent(activate, element);
+    //     });
 
-    };
+    // };
 
-    const _defineSelectionBoxes = () => {
+    // const _defineSelectionBoxes = () => {
 
-        selectionBoxes = [...document.querySelectorAll('[data-col-select]')];
-        //console.log(selectionBoxes);
+    //     selectionBoxes = [...document.querySelectorAll('[data-col-select]')];
+    //     //console.log(selectionBoxes);
 
-    };
+    // };
 
     const _selectBox = (e) => {
 
@@ -107,10 +107,16 @@ export const SelectionBar = (() => {
         } else {
 
             //console.log('Last selection is: ' + currentColumnSelection + ' which will be deselected');
-            _deselectBox(currentColumnSelection);
+            //_deselectBox(currentColumnSelection);
+            if (!currentColumnSelection) {
+                //console.log('selection not yet defined');
+                return;
+            }
+            Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${currentColumnSelection}"]`));
+            _setCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${currentColumnSelection}"]`));
             _addImageAndSetSelection();
             //console.log('Selection is: ' + currentColumnSelection);
-            
+
         }
 
         function _addImageAndSetSelection() {
@@ -120,42 +126,50 @@ export const SelectionBar = (() => {
             _setCheckerImageOnHoverEvent(false, selectedNode);
             Utilities.removeAllChildNodes(selectedNode);
             selectedNode.appendChild(GameState.getCurrentPlayer().getCheckerElement());
-            _setSubmitButtonState(true);
+            _setSubmitButtonEvent(true);//_setSubmitButtonState(true);
         }
 
     };
 
-    const _deselectBox = (boxDataKeyToDeselect) => {
-        if (!boxDataKeyToDeselect) {
-            console.log('selection not yet defined');
-            return;
-        }
-        Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
-        _setCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
-    };
+    // const _deselectBox = (boxDataKeyToDeselect) => {
+    //     if (!boxDataKeyToDeselect) {
+    //         console.log('selection not yet defined');
+    //         return;
+    //     }
+    //     Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
+    //     _setCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
+    // };
 
-    const _setClickAndSelectBoxEvent = (activate, targetElement) => {
+    // const _setClickAndSelectBoxEvent = (activate, targetElement) => {
 
-        if (activate) {
-            targetElement.addEventListener('click', _selectBox);
-        } else if (!activate) {
-            targetElement.removeEventListener('click', _selectBox);
-        };
+    //     if (activate) {
+    //         targetElement.addEventListener('click', _selectBox);
+    //     } else if (!activate) {
+    //         targetElement.removeEventListener('click', _selectBox);
+    //     };
 
-    };
+    // };
 
     const _setAllClickAndSelectBoxEvents = (activate) => {
 
         selectionBoxes.forEach(element => {
-            _setClickAndSelectBoxEvent(activate, element);
+            //_setClickAndSelectBoxEvent(activate, element);
+            if (activate) {
+                element.addEventListener('click', _selectBox);
+            } else if (!activate) {
+                element.removeEventListener('click', _selectBox);
+            };
         });
 
     };
 
     const setSelectionBarState = (active) => {
 
-        _setAllCheckerImageOnHoverEvents(active, selectionBoxes);
-        _setSubmitButtonState(false);
+        //_setAllCheckerImageOnHoverEvents(active, selectionBoxes);
+        selectionBoxes.forEach(element => {
+            _setCheckerImageOnHoverEvent(active, element);
+        });
+        _setSubmitButtonEvent(false);//_setSubmitButtonState(false);
         _setAllClickAndSelectBoxEvents(active);
         _clearImagesFromSelectionBoxes();
 
@@ -171,7 +185,8 @@ export const SelectionBar = (() => {
         //initialization only performed a single time for the first page load
         document.body.appendChild(submitMoveButton);
         document.body.appendChild(gameBoardSelectorBar);
-        _defineSelectionBoxes();
+        selectionBoxes = [...document.querySelectorAll('[data-col-select]')];
+        //_defineSelectionBoxes();
         setSelectionBarState(true);
     };
 
