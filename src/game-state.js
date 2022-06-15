@@ -5,7 +5,14 @@ export const GameState = (() => {
     const playerYellow = Player('yellow');
     const playerRed = Player('red');
 
-    let currentPlayer = playerRed;
+    let currentPlayer = playerYellow;
+
+    let chosenColumnForMove;
+
+    const setChosenColumnForMove = (column) => {
+        chosenColumnForMove = column;
+        console.log('Game state recorded '+ chosenColumnForMove + ' as current move');
+    };
 
     const getCurrentPlayer = () => {
         return currentPlayer;
@@ -13,6 +20,7 @@ export const GameState = (() => {
 
     return {
         getCurrentPlayer,
+        setChosenColumnForMove,
     };
 
 })();
