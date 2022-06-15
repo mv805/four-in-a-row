@@ -48,6 +48,11 @@ h1 {
 .selection-bar div {
     border-radius: 5px;
     background-color: rgba(48, 77, 129, 0.623);
+    border: 2px solid rgba(0, 128, 0, 0);
+}
+
+.selection-bar div:hover {
+    border-color: rgb(54, 114, 245);
 }
 
 .game-board-slots {
