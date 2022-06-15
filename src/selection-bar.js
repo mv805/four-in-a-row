@@ -30,15 +30,15 @@ export const SelectionBar = (() => {
     submitMoveButton.textContent = 'Submit Move';
     submitMoveButton.id = 'submit-move';
 
-    const _addCheckerImageToBox = (e) => {
+    const _addCheckerImageToBox = (e) => {//p
         e.target.appendChild(GameState.getCurrentPlayer().getCheckerElement());
     };
 
-    const _removeCheckerImageFromBox = (e) => {
+    const _removeCheckerImageFromBox = (e) => {//p
         Utilities.removeAllChildNodes(e.target);
     };
 
-    const _toggleCheckerImageOnHoverEvent = (activate, targetElement) => {
+    const _toggleCheckerImageOnHoverEvent = (activate, targetElement) => {//p
 
         if (activate) {
             targetElement.addEventListener('mouseenter', _addCheckerImageToBox);
@@ -50,9 +50,9 @@ export const SelectionBar = (() => {
 
     };
 
-    const _toggleAllCheckerImageOnHoverEvents = (activate) => {
+    const _toggleAllCheckerImageOnHoverEvents = (activate, array) => {//p
 
-        selectionBoxes.forEach(element => {
+        array.forEach(element => {
             _toggleCheckerImageOnHoverEvent(activate, element);
         });
 
@@ -126,7 +126,7 @@ export const SelectionBar = (() => {
 
     const deactivateSelectionBar = () => {
 
-        _toggleAllCheckerImageOnHoverEvents(false);
+        _toggleAllCheckerImageOnHoverEvents(false, selectionBoxes);
         //toggle the click and keep function off
         selectionBoxes.forEach(element => {
             Utilities.removeAllChildNodes(element);
@@ -139,7 +139,7 @@ export const SelectionBar = (() => {
         document.body.appendChild(submitMoveButton);
         document.body.appendChild(gameBoardSelectorBar);
         _defineSelectionBoxes();
-        _toggleAllCheckerImageOnHoverEvents(true);
+        _toggleAllCheckerImageOnHoverEvents(true, selectionBoxes);
         _toggleAllClickAndSelectBoxEvents(true);
     };
 
