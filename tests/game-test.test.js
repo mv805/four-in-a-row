@@ -9,7 +9,4 @@ describe('Player object behavior', () => {
         expect(player.getLastMove()).toEqual([0, 1]);
     });
 
-    test('Get color of the player piece', () => {
-        expect(player.getColor()).toBe('yellow');
-    });
 });
