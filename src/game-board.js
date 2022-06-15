@@ -75,18 +75,11 @@ export const GameBoard = (() => {
     const _addCheckerToBoard = (row, column, color) => {
 
         gameBoardArray[row][column] = Checker(color);
-        _updateBoardDisplay(row, column);
-
-    };
-
-    const _updateBoardDisplay = (row, column) => {
-
         let gridBoxToUpdate = document.body.querySelector(`[data-row="${row}"][data-col="${column}"]`);
         gridBoxToUpdate.appendChild(gameBoardArray[row][column].getElement());
 
     };
 
-    
     return {
         initializeAndAddGameBoardToDOM,
         
