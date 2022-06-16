@@ -3,8 +3,9 @@
 // remove a checker
 // check for 4 in a row
 // clear GameBoard
-
+import _ from 'lodash';
 import { Checker } from "./checker";
+import { GameState } from "./game-state";
 
 export const GameBoard = (() => {
 
@@ -19,7 +20,7 @@ export const GameBoard = (() => {
             <div data-row="0" data-col="4"></div>
             <div data-row="0" data-col="5"></div>
             <div data-row="0" data-col="6"></div>
-            <div data-row="0" data-col="0"></div>
+            <div data-row="1" data-col="0"></div>
             <div data-row="1" data-col="1"></div>
             <div data-row="1" data-col="2"></div>
             <div data-row="1" data-col="3"></div>
@@ -72,17 +73,30 @@ export const GameBoard = (() => {
         document.body.appendChild(gameBoardDisplay);
     };
 
-    const _addCheckerToBoard = (row, column, color) => {
+    const placeCheckerInColumn = (columnOfDrop) => {
+        for (let row = gameBoardArray.length - 1; row >= 0; row--) {
+            if (gameBoardArray[row][columnOfDrop] === '') {
+                gameBoardArray[row][columnOfDrop] = Checker(GameState.getCurrentPlayer().getPlayerColor());
+                let gridBoxToUpdate = document.body.querySelector(`[data-row="${row}"][data-col="${columnOfDrop}"]`);
+                gridBoxToUpdate.appendChild(gameBoardArray[row][columnOfDrop].getElement());
+                return;
+            }
+        }
+    };
 
-        gameBoardArray[row][column] = Checker(color);
-        let gridBoxToUpdate = document.body.querySelector(`[data-row="${row}"][data-col="${column}"]`);
-        gridBoxToUpdate.appendChild(gameBoardArray[row][column].getElement());
+    const checkIfColumnIsFull = (columnToCheck) => {
+        return (gameBoardArray[0][columnToCheck] ? true : false);
+    };
 
+    const getGameBoardArray = () => {
+        return _.cloneDeep(gameBoardArray);
     };
 
     return {
         initializeAndAddGameBoardToDOM,
-        
+        placeCheckerInColumn,
+        checkIfColumnIsFull,
+        getGameBoardArray,
     };
 
 })();
