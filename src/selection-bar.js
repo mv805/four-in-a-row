@@ -1,9 +1,5 @@
 import { GameState } from '../src/game-state.js';
 import * as Utilities from '../src/util.js'
-// SelectionBar:
-// [ok] take selection from current player, highlight and select
-// submit a move button
-// control bar and button activate/deactivate mode
 
 export const SelectionBar = (() => {
     //this is an example of IIFE (Immediately Invoked Function Expression)
@@ -35,15 +31,10 @@ export const SelectionBar = (() => {
         _clearImagesFromSelectionBoxes();
         console.log('Move submitted to gamestate: column ' + currentColumnSelection);
         GameState.setChosenColumnForMove(currentColumnSelection);
-        _setSubmitButtonEvent(false);//_setSubmitButtonState(false);
+        _setSubmitButtonEvent(false);
     };
 
-    // const _setSubmitButtonState = (active) => {
-    //     _setSubmitButtonEvent(active);
-    // };
-
     const _setSubmitButtonEvent = (active) => {
-
         if (active) {
             submitMoveButton.addEventListener('click', _submitMove);
             submitMoveButton.classList.remove('submit-move-inactive');
@@ -53,7 +44,6 @@ export const SelectionBar = (() => {
             submitMoveButton.classList.add('submit-move-inactive');
             submitMoveButton.classList.remove('submit-move-active');
         }
-
     };
 
     const _addCheckerImageToBox = (e) => {//p
@@ -65,7 +55,6 @@ export const SelectionBar = (() => {
     };
 
     const _setCheckerImageOnHoverEvent = (activate, targetElement) => {//p
-
         if (activate) {
             targetElement.addEventListener('mouseenter', _addCheckerImageToBox);
             targetElement.addEventListener('mouseleave', _removeCheckerImageFromBox);
@@ -73,106 +62,46 @@ export const SelectionBar = (() => {
             targetElement.removeEventListener('mouseenter', _addCheckerImageToBox);
             targetElement.removeEventListener('mouseleave', _removeCheckerImageFromBox);
         };
-
     };
 
-    // const _setAllCheckerImageOnHoverEvents = (activate, array) => {//p
-
-    //     array.forEach(element => {
-    //         _setCheckerImageOnHoverEvent(activate, element);
-    //     });
-
-    // };
-
-    // const _defineSelectionBoxes = () => {
-
-    //     selectionBoxes = [...document.querySelectorAll('[data-col-select]')];
-    //     //console.log(selectionBoxes);
-
-    // };
-
     const _selectBox = (e) => {
-
         if (currentColumnSelection === e.target.parentNode.getAttribute('data-col-select')) {
-
-            //console.log('Same box selected');
             return;
-
         } else if (!currentColumnSelection) {
-
             _addImageAndSetSelection();
-            //console.log('First initialization selection now: ' + currentColumnSelection);
             return;
-
         } else {
-
-            //console.log('Last selection is: ' + currentColumnSelection + ' which will be deselected');
-            //_deselectBox(currentColumnSelection);
             if (!currentColumnSelection) {
-                //console.log('selection not yet defined');
                 return;
             }
             Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${currentColumnSelection}"]`));
             _setCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${currentColumnSelection}"]`));
             _addImageAndSetSelection();
-            //console.log('Selection is: ' + currentColumnSelection);
-
         }
 
         function _addImageAndSetSelection() {
-
             currentColumnSelection = e.target.parentNode.getAttribute('data-col-select');
             let selectedNode = document.querySelector(`div[data-col-select="${currentColumnSelection}"]`);
             _setCheckerImageOnHoverEvent(false, selectedNode);
             Utilities.removeAllChildNodes(selectedNode);
             selectedNode.appendChild(GameState.getCurrentPlayer().getCheckerElement());
-            _setSubmitButtonEvent(true);//_setSubmitButtonState(true);
+            _setSubmitButtonEvent(true);
         }
-
     };
 
-    // const _deselectBox = (boxDataKeyToDeselect) => {
-    //     if (!boxDataKeyToDeselect) {
-    //         console.log('selection not yet defined');
-    //         return;
-    //     }
-    //     Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
-    //     _setCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${boxDataKeyToDeselect}"]`));
-    // };
-
-    // const _setClickAndSelectBoxEvent = (activate, targetElement) => {
-
-    //     if (activate) {
-    //         targetElement.addEventListener('click', _selectBox);
-    //     } else if (!activate) {
-    //         targetElement.removeEventListener('click', _selectBox);
-    //     };
-
-    // };
-
-    const _setAllClickAndSelectBoxEvents = (activate) => {
-
+    const setSelectionBarState = (active) => {
         selectionBoxes.forEach(element => {
-            //_setClickAndSelectBoxEvent(activate, element);
-            if (activate) {
+            _setCheckerImageOnHoverEvent(active, element);
+        });
+        _setSubmitButtonEvent(false);
+        selectionBoxes.forEach(element => {
+            if (active) {
                 element.addEventListener('click', _selectBox);
             } else if (!activate) {
                 element.removeEventListener('click', _selectBox);
             };
         });
-
-    };
-
-    const setSelectionBarState = (active) => {
-
-        //_setAllCheckerImageOnHoverEvents(active, selectionBoxes);
-        selectionBoxes.forEach(element => {
-            _setCheckerImageOnHoverEvent(active, element);
-        });
-        _setSubmitButtonEvent(false);//_setSubmitButtonState(false);
-        _setAllClickAndSelectBoxEvents(active);
         _clearImagesFromSelectionBoxes();
-
     };
 
     const _clearImagesFromSelectionBoxes = () => {
@@ -186,7 +115,6 @@ export const SelectionBar = (() => {
         document.body.appendChild(submitMoveButton);
         document.body.appendChild(gameBoardSelectorBar);
         selectionBoxes = [...document.querySelectorAll('[data-col-select]')];
-        //_defineSelectionBoxes();
         setSelectionBarState(true);
     };
 
