@@ -7,7 +7,7 @@ export const SelectionBar = (() => {
     //this is an example of IIFE (Immediately Invoked Function Expression)
     let selectionBoxes = undefined;
     let currentColumnSelection;
-    
+
     const gameBoardSelectorBar = document.createElement('div');
     gameBoardSelectorBar.innerHTML = `
     <div class="game-board-selector">
@@ -79,27 +79,24 @@ export const SelectionBar = (() => {
     const _selectBox = (e) => {
 
         if (currentColumnSelection !== e.target.parentNode.getAttribute('data-col-select') &&
-        currentColumnSelection) {
-            let lastSelectionNode =  document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
+            currentColumnSelection) {
+            let lastSelectionNode = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
             Utilities.removeAllChildNodes(lastSelectionNode);
             _setCheckerImageOnHoverEvent(true, lastSelectionNode);
         }
-        _addImageAndSetSelection();
 
-        function _addImageAndSetSelection() {
-            
-            currentColumnSelection = e.target.parentNode.getAttribute('data-col-select');
-            let selectedNode = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
-            _setCheckerImageOnHoverEvent(false, selectedNode);
-            Utilities.removeAllChildNodes(selectedNode);
-            selectedNode.appendChild(GameState.getCurrentPlayer().getCheckerElement());
-            _setSubmitButtonEvent(true);
-        }
+        currentColumnSelection = e.target.parentNode.getAttribute('data-col-select');
+        let selectedNode = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
+        _setCheckerImageOnHoverEvent(false, selectedNode);
+        Utilities.removeAllChildNodes(selectedNode);
+        selectedNode.appendChild(GameState.getCurrentPlayer().getCheckerElement());
+        _setSubmitButtonEvent(true);
+
 
     };
 
     const setSelectionBarState = (active) => {
-
+        //turn off or turn on all the normal selection events for the selection boxes
         selectionBoxes.forEach(element => {
             _setCheckerImageOnHoverEvent(active, element);
         });
@@ -107,11 +104,9 @@ export const SelectionBar = (() => {
         selectionBoxes.forEach(element => {
             if (active) {
                 element.addEventListener('click', _selectBox);
-            } else if (!activate) {
+            } else if (!active) {
                 element.removeEventListener('click', _selectBox);
             };
-        });
-        selectionBoxes.forEach(element => {
             Utilities.removeAllChildNodes(element);
         });
 
