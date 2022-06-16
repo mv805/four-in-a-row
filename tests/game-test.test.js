@@ -10,7 +10,7 @@ describe('Checker object behavior', () => {
     });
 
     test('Returned element is generated', () => {
-        expect(testElement.outerHTML).toBe('<img src=\"\">');
+        expect(testElement.outerHTML).toBe('<img class=\"checker\" src=\"\">');
     });
 
 });
