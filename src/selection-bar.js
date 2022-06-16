@@ -1,11 +1,12 @@
+
 import { GameState } from '../src/game-state.js';
 import * as Utilities from '../src/util.js'
+import { GameBoard } from './game-board.js';
 
 export const SelectionBar = (() => {
     //this is an example of IIFE (Immediately Invoked Function Expression)
     let selectionBoxes = undefined;
     let currentColumnSelection;
-    let lastSelection;
 
     const gameBoardSelectorBar = document.createElement('div');
     gameBoardSelectorBar.innerHTML = `
@@ -28,9 +29,12 @@ export const SelectionBar = (() => {
     submitMoveButton.classList.add('submit-move-inactive');
 
     const _submitMove = () => {
+        if (GameBoard.checkIfColumnIsFull(currentColumnSelection)) {
+            return;
+        }
         _clearImagesFromSelectionBoxes();
         console.log('Move submitted to gamestate: column ' + currentColumnSelection);
-        GameState.setChosenColumnForMove(currentColumnSelection);
+        GameState.placeAChecker(currentColumnSelection);
         _setSubmitButtonEvent(false);
     };
 
