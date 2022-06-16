@@ -7,7 +7,7 @@ export const SelectionBar = (() => {
     //this is an example of IIFE (Immediately Invoked Function Expression)
     let selectionBoxes = undefined;
     let currentColumnSelection;
-
+    
     const gameBoardSelectorBar = document.createElement('div');
     gameBoardSelectorBar.innerHTML = `
     <div class="game-board-selector">
@@ -29,16 +29,17 @@ export const SelectionBar = (() => {
     submitMoveButton.classList.add('submit-move-inactive');
 
     const _submitMove = () => {
+
         if (GameBoard.checkIfColumnIsFull(currentColumnSelection)) {
             return;
         }
-        _clearImagesFromSelectionBoxes();
-        console.log('Move submitted to gamestate: column ' + currentColumnSelection);
         GameState.placeAChecker(currentColumnSelection);
-        _setSubmitButtonEvent(false);
+        setSelectionBarState(true);
+
     };
 
     const _setSubmitButtonEvent = (active) => {
+
         if (active) {
             submitMoveButton.addEventListener('click', _submitMove);
             submitMoveButton.classList.remove('submit-move-inactive');
@@ -48,17 +49,23 @@ export const SelectionBar = (() => {
             submitMoveButton.classList.add('submit-move-inactive');
             submitMoveButton.classList.remove('submit-move-active');
         }
+
     };
 
-    const _addCheckerImageToBox = (e) => {//p
+    const _addCheckerImageToBox = (e) => {
+
         e.target.appendChild(GameState.getCurrentPlayer().getCheckerElement());
+
     };
 
-    const _removeCheckerImageFromBox = (e) => {//p
+    const _removeCheckerImageFromBox = (e) => {
+
         Utilities.removeAllChildNodes(e.target);
+
     };
 
-    const _setCheckerImageOnHoverEvent = (activate, targetElement) => {//p
+    const _setCheckerImageOnHoverEvent = (activate, targetElement) => {
+
         if (activate) {
             targetElement.addEventListener('mouseenter', _addCheckerImageToBox);
             targetElement.addEventListener('mouseleave', _removeCheckerImageFromBox);
@@ -66,34 +73,33 @@ export const SelectionBar = (() => {
             targetElement.removeEventListener('mouseenter', _addCheckerImageToBox);
             targetElement.removeEventListener('mouseleave', _removeCheckerImageFromBox);
         };
+
     };
 
     const _selectBox = (e) => {
-        if (currentColumnSelection === e.target.parentNode.getAttribute('data-col-select')) {
-            return;
-        } else if (!currentColumnSelection) {
-            _addImageAndSetSelection();
-            return;
-        } else {
-            if (!currentColumnSelection) {
-                return;
-            }
-            Utilities.removeAllChildNodes(document.querySelector(`div[data-col-select="${currentColumnSelection}"]`));
-            _setCheckerImageOnHoverEvent(true, document.querySelector(`div[data-col-select="${currentColumnSelection}"]`));
-            _addImageAndSetSelection();
+
+        if (currentColumnSelection !== e.target.parentNode.getAttribute('data-col-select') &&
+        currentColumnSelection) {
+            let lastSelectionNode =  document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
+            Utilities.removeAllChildNodes(lastSelectionNode);
+            _setCheckerImageOnHoverEvent(true, lastSelectionNode);
         }
+        _addImageAndSetSelection();
 
         function _addImageAndSetSelection() {
+            
             currentColumnSelection = e.target.parentNode.getAttribute('data-col-select');
-            let selectedNode = document.querySelector(`div[data-col-select="${currentColumnSelection}"]`);
+            let selectedNode = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
             _setCheckerImageOnHoverEvent(false, selectedNode);
             Utilities.removeAllChildNodes(selectedNode);
             selectedNode.appendChild(GameState.getCurrentPlayer().getCheckerElement());
             _setSubmitButtonEvent(true);
         }
+
     };
 
     const setSelectionBarState = (active) => {
+
         selectionBoxes.forEach(element => {
             _setCheckerImageOnHoverEvent(active, element);
         });
@@ -105,26 +111,27 @@ export const SelectionBar = (() => {
                 element.removeEventListener('click', _selectBox);
             };
         });
-        _clearImagesFromSelectionBoxes();
-    };
-
-    const _clearImagesFromSelectionBoxes = () => {
         selectionBoxes.forEach(element => {
             Utilities.removeAllChildNodes(element);
         });
+
     };
 
     const initializeAndAddSelectionBarToDOM = () => {
+
         //initialization only performed a single time for the first page load
         document.body.appendChild(submitMoveButton);
         document.body.appendChild(gameBoardSelectorBar);
         selectionBoxes = [...document.querySelectorAll('[data-col-select]')];
         setSelectionBarState(true);
+
     };
 
     return {
+
         initializeAndAddSelectionBarToDOM,
         setSelectionBarState,
+
     };
 
 })();
