@@ -1,4 +1,5 @@
 import { Player } from '../src/player.js';
+import { GameBoard } from './game-board.js';
 
 export const GameState = (() => {
 
@@ -7,11 +8,13 @@ export const GameState = (() => {
 
     let currentPlayer = playerYellow;
 
-    let chosenColumnForMove;
+    const placeAChecker = (column) => {
+        GameBoard.placeCheckerInColumn(column);
+        _switchPlayer();
+    };
 
-    const setChosenColumnForMove = (column) => {
-        chosenColumnForMove = column;
-        console.log('Game state recorded '+ chosenColumnForMove + ' as current move');
+    const _switchPlayer = () => {
+        currentPlayer === playerYellow ? currentPlayer = playerRed: currentPlayer = playerYellow;
     };
 
     const getCurrentPlayer = () => {
@@ -20,7 +23,7 @@ export const GameState = (() => {
 
     return {
         getCurrentPlayer,
-        setChosenColumnForMove,
+        placeAChecker,
     };
 
 })();
