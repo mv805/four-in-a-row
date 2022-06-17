@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { Checker } from "./checker";
 import { GameState } from "./game-state";
 
-export const GameBoard = () => {
+export const GameBoard = (initialBoardArray) => {
 
     let gameState;
     const gameBoardDisplay = document.createElement('div');
@@ -60,32 +60,34 @@ export const GameBoard = () => {
     </div>
     `;
 
-    const gameBoardArray = [
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', ''],
-    ];
+    let gameBoardArray = initialBoardArray;
 
-    const addToDOM= () => {
+    const addToDOM = () => {
         //initialization only performed a single time for the first page load
         document.body.appendChild(gameBoardDisplay);
+        _initialDisplay();
     };
 
-    const placeCheckerInColumn = (columnOfDrop) => {
+    const placeCheckerInColumn = (columnOfDrop, colorOfChecker) => {
 
         for (let row = gameBoardArray.length - 1; row >= 0; row--) {
             if (gameBoardArray[row][columnOfDrop] === '') {
-                gameBoardArray[row][columnOfDrop] = Checker(gameState.getCurrentPlayer().getPlayerColor());
+                gameBoardArray[row][columnOfDrop] = Checker(colorOfChecker);
                 let gridBoxToUpdate = document.body.querySelector(`[data-row="${row}"][data-col="${columnOfDrop}"]`);
                 gridBoxToUpdate.appendChild(gameBoardArray[row][columnOfDrop].getElement());
                 _checkForFourInARow(row, columnOfDrop);
                 return;
             }
         }
-        
+
+    };
+
+    const _directCheckerPlacement = (row, col, checker) => {
+        //for placing a checker straight into cell. For initialization only.
+        //the placeCheckerInColumn function simulates dropping a checker from the top and falling into place and should be used for game placement
+
+        let gridBoxToUpdate = document.body.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+        gridBoxToUpdate.appendChild(checker.getElement());
     };
 
     const checkIfColumnIsFull = (columnToCheck) => {
@@ -97,7 +99,18 @@ export const GameBoard = () => {
     };
 
     const _checkForFourInARow = (row, column) => {
-        gameState.fourInARow(true);
+        //gameState.reportFourInARow(true);
+    };
+
+    const _initialDisplay = () => {
+        for (let row = 0; row < gameBoardArray.length; row++) {
+            for (let col = 0; col < gameBoardArray[row].length; col++) {
+                if (gameBoardArray[row][col] !== '') {
+                    _directCheckerPlacement(row, col, gameBoardArray[row][col]);
+                }
+            }
+
+        }
     };
 
     const initialize = (GameState) => {
