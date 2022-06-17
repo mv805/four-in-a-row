@@ -12,12 +12,23 @@ const header = document.createElement('h1');
 header.textContent = 'FOUR IN A ROW!';
 document.body.appendChild(header);
 
-let gameBoard = GameBoard();
+let initialBoard =  [
+    ['', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', ''],
+    ['', '', '', '', '', '', ''],
+];
+
+let gameBoard = GameBoard(initialBoard);
+
 let gameState = GameState();
 let selectionBar = SelectionBar();
 gameBoard.initialize(gameState);
 gameState.initialize(gameBoard);
 selectionBar.initialize(gameBoard, gameState);
+
 
 selectionBar.addToDOM();
 gameBoard.addToDOM();
