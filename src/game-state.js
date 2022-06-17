@@ -11,7 +11,7 @@ export const GameState = () => {
     let currentPlayer = playerYellow;
 
     const placeAChecker = (column) => {
-        gameBoard.placeCheckerInColumn(column);
+        gameBoard.placeCheckerInColumn(column, currentPlayer.getPlayerColor());
         _switchPlayer();
     };
 
@@ -23,7 +23,7 @@ export const GameState = () => {
         return currentPlayer;
     };
 
-    const fourInARow = (fourInARow) => {
+    const reportFourInARow = (fourInARow) => {
 
         if (fourInARow) {
             gameWon = true;
@@ -38,7 +38,7 @@ export const GameState = () => {
     return {
         getCurrentPlayer,
         placeAChecker,
-        fourInARow,
+        reportFourInARow,
         initialize,
     };
 
