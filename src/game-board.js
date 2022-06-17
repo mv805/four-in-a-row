@@ -7,8 +7,9 @@ import _ from 'lodash';
 import { Checker } from "./checker";
 import { GameState } from "./game-state";
 
-export const GameBoard = (() => {
+export const GameBoard = () => {
 
+    let gameState;
     const gameBoardDisplay = document.createElement('div');
     gameBoardDisplay.innerHTML = `
     <div class="game-board-slots">
@@ -68,20 +69,23 @@ export const GameBoard = (() => {
         ['', '', '', '', '', '', ''],
     ];
 
-    const initializeAndAddGameBoardToDOM = () => {
+    const addToDOM= () => {
         //initialization only performed a single time for the first page load
         document.body.appendChild(gameBoardDisplay);
     };
 
     const placeCheckerInColumn = (columnOfDrop) => {
+
         for (let row = gameBoardArray.length - 1; row >= 0; row--) {
             if (gameBoardArray[row][columnOfDrop] === '') {
-                gameBoardArray[row][columnOfDrop] = Checker(GameState.getCurrentPlayer().getPlayerColor());
+                gameBoardArray[row][columnOfDrop] = Checker(gameState.getCurrentPlayer().getPlayerColor());
                 let gridBoxToUpdate = document.body.querySelector(`[data-row="${row}"][data-col="${columnOfDrop}"]`);
                 gridBoxToUpdate.appendChild(gameBoardArray[row][columnOfDrop].getElement());
+                _checkForFourInARow(row, columnOfDrop);
                 return;
             }
         }
+        
     };
 
     const checkIfColumnIsFull = (columnToCheck) => {
@@ -92,11 +96,20 @@ export const GameBoard = (() => {
         return _.cloneDeep(gameBoardArray);
     };
 
+    const _checkForFourInARow = (row, column) => {
+        gameState.fourInARow(true);
+    };
+
+    const initialize = (GameState) => {
+        gameState = GameState;
+    };
+
     return {
-        initializeAndAddGameBoardToDOM,
+        addToDOM,
         placeCheckerInColumn,
         checkIfColumnIsFull,
         getGameBoardArray,
+        initialize,
     };
 
-})();
+};

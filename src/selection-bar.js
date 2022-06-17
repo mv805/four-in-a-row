@@ -3,8 +3,10 @@ import { GameState } from '../src/game-state.js';
 import * as Utilities from '../src/util.js'
 import { GameBoard } from './game-board.js';
 
-export const SelectionBar = (() => {
-    //this is an example of IIFE (Immediately Invoked Function Expression)
+export const SelectionBar = () => {
+    
+    let gameState;
+    let gameBoard;
     let selectionBoxes = undefined;
     let currentColumnSelection;
 
@@ -30,12 +32,12 @@ export const SelectionBar = (() => {
 
     const _submitMove = () => {
 
-        if (GameBoard.checkIfColumnIsFull(currentColumnSelection)) {
+        if (gameBoard.checkIfColumnIsFull(currentColumnSelection)) {
             return;
         }
-        GameState.placeAChecker(currentColumnSelection);
-        setSelectionBarState(true);
 
+        gameState.placeAChecker(currentColumnSelection);
+        setSelectionBarState(true);
     };
 
     const _setSubmitButtonEvent = (active) => {
@@ -53,15 +55,11 @@ export const SelectionBar = (() => {
     };
 
     const _addCheckerImageToBox = (e) => {
-
-        e.target.appendChild(GameState.getCurrentPlayer().getCheckerElement());
-
+        e.target.appendChild(gameState.getCurrentPlayer().getCheckerElement());
     };
 
     const _removeCheckerImageFromBox = (e) => {
-
         Utilities.removeAllChildNodes(e.target);
-
     };
 
     const _setCheckerImageOnHoverEvent = (activate, targetElement) => {
@@ -79,17 +77,24 @@ export const SelectionBar = (() => {
     const _selectBox = (e) => {
 
         if (currentColumnSelection !== e.target.parentNode.getAttribute('data-col-select') &&
-            currentColumnSelection) {
+            currentColumnSelection ) {
+
             let lastSelectionNode = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
             Utilities.removeAllChildNodes(lastSelectionNode);
             _setCheckerImageOnHoverEvent(true, lastSelectionNode);
+
+        }
+
+        if(e.target.parentNode.getAttribute('data-col-select') === null){
+            console.log('null selection');
+            return;
         }
 
         currentColumnSelection = e.target.parentNode.getAttribute('data-col-select');
         let selectedNode = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
         _setCheckerImageOnHoverEvent(false, selectedNode);
         Utilities.removeAllChildNodes(selectedNode);
-        selectedNode.appendChild(GameState.getCurrentPlayer().getCheckerElement());
+        selectedNode.appendChild(gameState.getCurrentPlayer().getCheckerElement());
         _setSubmitButtonEvent(true);
 
 
@@ -100,7 +105,9 @@ export const SelectionBar = (() => {
         selectionBoxes.forEach(element => {
             _setCheckerImageOnHoverEvent(active, element);
         });
+
         _setSubmitButtonEvent(false);
+
         selectionBoxes.forEach(element => {
             if (active) {
                 element.addEventListener('click', _selectBox);
@@ -112,21 +119,22 @@ export const SelectionBar = (() => {
 
     };
 
-    const initializeAndAddSelectionBarToDOM = () => {
-
-        //initialization only performed a single time for the first page load
+    const addToDOM = () => {
         document.body.appendChild(submitMoveButton);
         document.body.appendChild(gameBoardSelectorBar);
         selectionBoxes = [...document.querySelectorAll('[data-col-select]')];
         setSelectionBarState(true);
+    };
 
+    const initialize = (GameBoard, GameState) => {
+        gameBoard = GameBoard;
+        gameState = GameState;
     };
 
     return {
-
-        initializeAndAddSelectionBarToDOM,
         setSelectionBarState,
-
+        addToDOM,
+        initialize,
     };
 
-})();
+};
