@@ -4,7 +4,7 @@ import * as Utilities from '../src/util.js'
 import { GameBoard } from './game-board.js';
 
 export const SelectionBar = () => {
-    
+
     let gameState;
     let gameBoard;
     let selectionBoxes = undefined;
@@ -76,28 +76,33 @@ export const SelectionBar = () => {
 
     const _selectBox = (e) => {
 
-        if (currentColumnSelection !== e.target.parentNode.getAttribute('data-col-select') &&
-            currentColumnSelection ) {
+        let selectedBox = e.target.parentNode;
+        let lastSelectedBox = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
 
-            let lastSelectionNode = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
-            Utilities.removeAllChildNodes(lastSelectionNode);
-            _setCheckerImageOnHoverEvent(true, lastSelectionNode);
-
-        }
-
-        if(e.target.parentNode.getAttribute('data-col-select') === null){
-            console.log('null selection');
+        if (!currentColumnSelection) {
+            console.log('selection wasnt initialized');
+            makeSelectedCurrentSelection(selectedBox);
             return;
+        } else if (currentColumnSelection === selectedBox.getAttribute('data-col-select')) {
+            makeSelectedCurrentSelection(selectedBox);
+            return;
+        } else {
+            unsetLastSelection(lastSelectedBox);
+            makeSelectedCurrentSelection(selectedBox);
         }
 
-        currentColumnSelection = e.target.parentNode.getAttribute('data-col-select');
-        let selectedNode = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
-        _setCheckerImageOnHoverEvent(false, selectedNode);
-        Utilities.removeAllChildNodes(selectedNode);
-        selectedNode.appendChild(gameState.getCurrentPlayer().getCheckerElement());
-        _setSubmitButtonEvent(true);
+        function unsetLastSelection(lastSelection) {
+            Utilities.removeAllChildNodes(lastSelection);
+            _setCheckerImageOnHoverEvent(true, lastSelection);
+            lastSelection.addEventListener('click', _selectBox);
+        }
 
-
+        function makeSelectedCurrentSelection(selectedBox) {
+            currentColumnSelection = selectedBox.getAttribute('data-col-select');
+            _setCheckerImageOnHoverEvent(false, selectedBox);
+            selectedBox.removeEventListener('click', _selectBox);
+            _setSubmitButtonEvent(true);
+        }
     };
 
     const setSelectionBarState = (active) => {
