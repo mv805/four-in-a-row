@@ -7,38 +7,67 @@ export const GameState = () => {
     let gameWon = false;
     const playerYellow = Player('yellow');
     const playerRed = Player('red');
+    let lastMove;
 
     let currentPlayer = playerYellow;
 
-    const placeAChecker = (column) => {
-        gameBoard.placeCheckerInColumn(column, currentPlayer.getPlayerColor());
-        _switchPlayer();
+    const setLastMove = (row, column) => {
+        lastMove = [row, column];
     };
 
-    const _switchPlayer = () => {
-        currentPlayer === playerYellow ? currentPlayer = playerRed: currentPlayer = playerYellow;
+    const placeAChecker = (column) => {
+        gameBoard.placeCheckerAndRecordLast(column, currentPlayer.getPlayerColor());
+        _updateWinStatus(gameBoard.checkForFourInARow(lastMove[0], lastMove[1], currentPlayer.getPlayerColor()));
+        _togglePlayer();
+    };
+
+    const _updateWinStatus = (fourInARow) => {
+
+        if (fourInARow) {
+            gameWon = true;
+            console.log('Winner:', currentPlayer.getPlayerColor());
+        };
+
+    };
+
+    const _togglePlayer = () => {
+
+        if (currentPlayer === playerYellow) {
+            currentPlayer = playerRed;
+        } else {
+            currentPlayer = playerYellow;
+        };
+        console.log('toggled to:',currentPlayer.getPlayerColor());
+
     };
 
     const getCurrentPlayer = () => {
         return currentPlayer;
     };
 
-    const reportFourInARow = (fourInARow) => {
-
-        if (fourInARow) {
-            gameWon = true;
-        }
-        
-    };
-
     const initialize = (GameBoard) => {
         gameBoard = GameBoard;
     };
 
+    const getWinStatus = () => {
+        return gameWon;
+    };
+
+    const setCurrentPlayer = (playerColor) => {
+
+        if (playerColor === 'yellow') {
+            currentPlayer = playerYellow;
+        } else if (playerColor === 'red'){
+            currentPlayer = playerRed;
+        };
+    };
+
     return {
+        setLastMove,
+        getWinStatus,
         getCurrentPlayer,
+        setCurrentPlayer,
         placeAChecker,
-        reportFourInARow,
         initialize,
     };
 

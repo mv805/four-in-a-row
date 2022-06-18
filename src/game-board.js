@@ -68,17 +68,17 @@ export const GameBoard = (initialBoardArray) => {
         _initialDisplay();
     };
 
-    const placeCheckerInColumn = (columnOfDrop, colorOfChecker) => {
+    const placeCheckerAndRecordLast = (columnOfDrop, playerColor) => {
 
         for (let row = gameBoardArray.length - 1; row >= 0; row--) {
             if (gameBoardArray[row][columnOfDrop] === '') {
-                gameBoardArray[row][columnOfDrop] = Checker(colorOfChecker);
+                gameBoardArray[row][columnOfDrop] = Checker(playerColor);
                 let gridBoxToUpdate = document.body.querySelector(`[data-row="${row}"][data-col="${columnOfDrop}"]`);
                 gridBoxToUpdate.appendChild(gameBoardArray[row][columnOfDrop].getElement());
-                _checkForFourInARow(row, columnOfDrop);
+                gameState.setLastMove(row, columnOfDrop);
                 return;
-            }
-        }
+            };
+        };
 
     };
 
@@ -98,8 +98,161 @@ export const GameBoard = (initialBoardArray) => {
         return _.cloneDeep(gameBoardArray);
     };
 
-    const _checkForFourInARow = (row, column) => {
-        //gameState.reportFourInARow(true);
+    const checkForFourInARow = (rowIndex, colIndex, playerColor) => {
+
+        let rowTraverse;
+        let checkersInARow = 0;
+        //check to the bottom of the pivot
+        for (let row = rowIndex; row < gameBoardArray.length; row++) {
+            let currentColor = gameBoardArray[row][colIndex].getColor();
+
+            if (currentColor === playerColor) {
+                checkersInARow++;
+            } else {
+                break;
+            };
+
+        };
+
+        if (checkersInARow >= 4) {
+            return true;
+        } else {
+            checkersInARow = 0;
+        };
+
+        //check to the right of the pivot
+        for (let col = colIndex; col < gameBoardArray[0].length; col++) {
+
+            if (gameBoardArray[rowIndex][col] !== '' && gameBoardArray[rowIndex][col].getColor() === playerColor) {
+                checkersInARow++;
+
+            } else {
+                break;
+            };
+
+        };
+
+        if (checkersInARow >= 4) {
+            return true;
+        } else {
+            checkersInARow = 0;
+        };
+
+        //check to the left of the pivot
+        for (let col = colIndex; col >= 0; col--) {
+
+            if (gameBoardArray[rowIndex][col] !== '' && gameBoardArray[rowIndex][col].getColor() === playerColor) {
+                checkersInARow++;
+            } else {
+                break;
+            };
+
+        };
+
+        if (checkersInARow >= 4) {
+            return true;
+        } else {
+            checkersInARow = 0;
+        };
+
+        //check to the top and right diagonal of the pivot
+
+        if (rowIndex >= 3 && colIndex <= 3) {
+            rowTraverse = rowIndex;
+            for (let col = colIndex; col <= colIndex + 3; col++) {
+
+                if (gameBoardArray[rowTraverse][col] !== '' && gameBoardArray[rowTraverse][col].getColor() === playerColor) {
+                    checkersInARow++;
+                    rowTraverse--;
+                } else {
+                    break;
+                }
+
+            };
+
+            if (checkersInARow >= 4) {
+                return true;
+            } else {
+                checkersInARow = 0;
+            };
+
+        };
+
+        //check to the bottom and right diagonal of the pivot
+        if (rowIndex <= 2 && colIndex <= 3) {
+            rowTraverse = rowIndex;
+            for (let col = colIndex; col <= colIndex + 3; col++) {
+
+                if (gameBoardArray[rowTraverse][col] !== '' && gameBoardArray[rowTraverse][col].getColor() === playerColor) {
+                    checkersInARow++;
+                    rowTraverse++;
+                } else {
+                    break;
+                }
+
+            };
+
+            if (checkersInARow >= 4) {
+                return true;
+            } else {
+                checkersInARow = 0;
+            };
+
+        };
+
+
+        //check to the bottom and left diagonal of the pivot
+        if (rowIndex <= 2 && colIndex >= 3) {
+
+            rowTraverse = rowIndex;
+
+            for (let col = colIndex; col >= colIndex - 3; col--) {
+
+                if (gameBoardArray[rowTraverse][col] !== '' && gameBoardArray[rowTraverse][col].getColor() === playerColor) {
+                    checkersInARow++;
+                    rowTraverse++;
+
+                    // if (rowTraverse === gameBoardArray.length){
+                    //     break;
+                    // };
+
+                } else {
+                    break;
+                };
+
+            };
+
+            if (checkersInARow >= 4) {
+                return true;
+            } else {
+                checkersInARow = 0;
+            };
+        };
+
+        //check to the top and left diagonal of the pivot
+        if (rowIndex >= 3 && colIndex >= 3) {
+
+            rowTraverse = rowIndex;
+
+            for (let col = colIndex; col >= colIndex - 3; col--) {
+
+                if (gameBoardArray[rowTraverse][col] !== '' && gameBoardArray[rowTraverse][col].getColor() === playerColor) {
+                    checkersInARow++;
+                    rowTraverse--;
+                } else {
+                    break;
+                };
+
+            };
+
+            if (checkersInARow >= 4) {
+                return true;
+            } else {
+                checkersInARow = 0;
+            };
+        };
+
+        return false;
     };
 
     const _initialDisplay = () => {
@@ -107,10 +260,10 @@ export const GameBoard = (initialBoardArray) => {
             for (let col = 0; col < gameBoardArray[row].length; col++) {
                 if (gameBoardArray[row][col] !== '') {
                     _directCheckerPlacement(row, col, gameBoardArray[row][col]);
-                }
-            }
+                };
+            };
 
-        }
+        };
     };
 
     const initialize = (GameState) => {
@@ -119,8 +272,9 @@ export const GameBoard = (initialBoardArray) => {
 
     return {
         addToDOM,
-        placeCheckerInColumn,
+        placeCheckerAndRecordLast,
         checkIfColumnIsFull,
+        checkForFourInARow,
         getGameBoardArray,
         initialize,
     };

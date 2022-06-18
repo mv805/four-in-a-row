@@ -2,6 +2,8 @@ import { Checker } from '../src/checker';
 import { GameBoard } from '../src/game-board';
 import { GameState } from '../src/game-state';
 import * as Utilities from '../src/util';
+import _ from 'lodash';
+//ctrl + k  ctrl+shift+s save without formatting
 
 describe('Checker object behavior', () => {
 
@@ -18,74 +20,933 @@ describe('Checker object behavior', () => {
 
 });
 
-describe('GameBoard object behavior', () => {
-    describe('Detecting four in a row', () => {
+describe('GameState object behavior', () => {
+
+    describe('Detecting a win condition', () => {
 
         let testGameBoard;
         let testGameState;
-        let reportingSpy;
 
         const Y = Checker('yellow');
         const R = Checker('red');
 
-        const testBoards = {
+        function boardSetup(board) {
 
-            'case-1': [
-                ['', '', '', '', '', '', ''],
-                ['', '', '', '', '', '', ''],
-                ['', '', '', '', '', '', ''],
-                [Y, '', '', '', '', '', ''],
-                [Y, R, '', '', '', '', ''],
-                [Y, R, R, '', '', '', ''],
-            ],
-
-            'case-2': [
-                ['', '', '', '', '', '', ''],
-                ['', '', '', '', '', '', ''],
-                ['', '', '', '', '', '', ''],
-                ['', '', '', '', '', '', ''],
-                ['', '', '', '', '', '', ''],
-                ['', '', '', '', '', '', ''],
-            ],
-            
-        };
-
-        const testColumnsToDrop = {
-            'case-1': 0,
-            'case-2': 0,
-        }
-
-        it('Case 1: should report true. Four Yellow in a row', () => {
-
-            boardSetup(1);
-            testGameBoard.placeCheckerInColumn(testColumnsToDrop['case-1'], 'yellow');
-            expect(reportingSpy).toHaveBeenCalledWith(true);
-
-        });
-
-        it('Case 2: should report false. First drop with yellow', () => {
-
-            boardSetup(2);
-            testGameBoard.placeCheckerInColumn(testColumnsToDrop['case-2'], 'yellow');
-            expect(reportingSpy).toHaveBeenCalledWith(false);
-
-        });
-
-        function boardSetup(caseNumber) {
-
-            testGameBoard = GameBoard(testBoards[`case-${caseNumber}`]);
+            testGameBoard = GameBoard(board);
             testGameState = GameState();
             testGameBoard.initialize(testGameState);
             testGameState.initialize(testGameBoard);
             testGameBoard.addToDOM();
-            reportingSpy = jest.spyOn(testGameState, 'reportFourInARow');
-        }
 
-        afterEach(() => {
-            testGameBoard = undefined;
-            testGameState = undefined;
-            Utilities.removeAllChildNodes(document.body);
-            reportingSpy.mockRestore();
+        };
+
+        describe('Vertical win', () => {
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [Y , '', '', '', '', '', ''],
+                    [Y , '', '', '', '', '', ''],
+                    [Y , '', '', '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [Y , '', '', '', '', '', ''],
+                    [Y , '', '', '', '', '', ''],
+                    [Y , '', '', '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [R , '', '', '', '', '', ''],
+                    [R , '', '', '', '', '', ''],
+                    [R , '', '', '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [R , '', '', '', '', '', ''],
+                    [R , '', '', '', '', '', ''],
+                    [R , '', '', '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', R ],
+                    ['', '', '', '', '', '', R ],
+                    ['', '', '', '', '', '', R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(6);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', R ],
+                    ['', '', '', '', '', '', R ],
+                    ['', '', '', '', '', '', R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(6);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            afterEach(() => {
+
+                testGameBoard = undefined;
+                testGameState = undefined;
+                Utilities.removeAllChildNodes(document.body);
+
+            });
         });
+
+        describe('Horizontal win', () => {
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', Y , Y , Y , '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', Y , Y , Y , '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', R , R , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', R , R , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [Y , Y , Y , '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [Y , Y , Y , '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [R , R , R , '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [R , R , R , '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', Y , Y , Y , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(1);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', Y , Y , Y , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(5);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            afterEach(() => {
+
+                testGameBoard = undefined;
+                testGameState = undefined;
+                Utilities.removeAllChildNodes(document.body);
+
+            });
+        });
+
+        describe('Top right diagonal win', () => {
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', Y , '', '', ''],
+                    ['', '', Y , R , '', '', ''],
+                    ['', Y , R , Y , '', '', ''],
+                    ['', Y , R , R , R , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', Y , '', '', ''],
+                    ['', '', Y , R , '', '', ''],
+                    ['', Y , R , Y , '', '', ''],
+                    ['', Y , R , R , R , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', R , '', '', ''],
+                    ['', '', R , R , Y , '', ''],
+                    ['', R , Y , Y , Y , '', ''],
+                    ['', Y , R , Y , R , Y , ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', R , '', '', ''],
+                    ['', '', R , R , Y , '', ''],
+                    ['', R , Y , Y , Y , '', ''],
+                    ['', Y , R , Y , R , Y , ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', Y ],
+                    ['', '', '', '', '', '', R ],
+                    ['', '', '', '', '', R , Y ],
+                    ['', '', '', '', R , Y , R ],
+                    ['', '', '', '', Y , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', Y ],
+                    ['', '', '', '', '', '', R ],
+                    ['', '', '', '', '', R , Y ],
+                    ['', '', '', '', R , Y , R ],
+                    ['', '', '', '', Y , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', Y ],
+                    ['', '', '', '', '', Y , Y ],
+                    ['', '', '', '', '', Y , R ],
+                    ['', '', '', '', R , R , Y ],
+                    ['', '', R , '', R , Y , R ],
+                    ['', R , R , Y , Y , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(4);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', Y ],
+                    ['', '', '', '', '', Y , Y ],
+                    ['', '', '', '', Y , Y , R ],
+                    ['', '', '', '', R , R , Y ],
+                    [R , '', R , Y , R , Y , R ],
+                    [R , R , R , Y , Y , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', Y ],
+                    ['', '', '', '', '', Y , Y ],
+                    ['', '', '', '', Y , Y , R ],
+                    ['', '', '', '', R , R , Y ],
+                    [R , Y , R , Y , R , Y , R ],
+                    [R , R , R , Y , Y , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            afterEach(() => {
+
+                testGameBoard = undefined;
+                testGameState = undefined;
+                Utilities.removeAllChildNodes(document.body);
+
+            });
+        });
+
+        describe('Bottom right diagonal win', () => {
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', Y , R , Y , '', ''],
+                    ['', R , R , Y , R , Y , ''],
+                    [R , Y , R , Y , R , R , Y ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', Y , R , Y , '', ''],
+                    ['', R , R , Y , R , Y , ''],
+                    [R , Y , R , Y , R , R , Y ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', Y , Y , R , '', ''],
+                    ['', R , R , Y , Y , R , ''],
+                    [R , Y , Y , R , R , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', Y , Y , R , '', ''],
+                    ['', R , R , Y , Y , R , ''],
+                    [R , Y , Y , R , R , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [R , Y , '', '', '', '', ''],
+                    [Y , Y , Y , '', '', '', ''],
+                    [R , Y , R , Y , '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    [R , Y , '', '', '', '', ''],
+                    [Y , Y , Y , '', '', '', ''],
+                    [R , Y , R , Y , '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', Y , '', '', '', '', ''],
+                    [R , R , Y , '', '', '', ''],
+                    [Y , Y , R , R , '', '', ''],
+                    [R , Y , R , R , Y , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', Y , '', '', '', '', ''],
+                    [R , R , Y , '', '', '', ''],
+                    [Y , Y , R , R , '', '', ''],
+                    [R , Y , R , R , Y , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(0);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', Y , Y , R , '', ''],
+                    ['', R , R , Y , Y , R , ''],
+                    [R , Y , Y , R , R , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(2);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            afterEach(() => {
+
+                testGameBoard = undefined;
+                testGameState = undefined;
+                Utilities.removeAllChildNodes(document.body);
+
+            });
+        });
+
+        describe('Bottom left diagonal win', () => {
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', Y , R , '', '', ''],
+                    ['', Y , R , Y , '', '', ''],
+                    [Y , Y , R , R , R , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', Y , R , '', '', ''],
+                    ['', Y , R , Y , '', '', ''],
+                    [Y , Y , R , R , R , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', R , R , Y , '', ''],
+                    ['', R , Y , Y , Y , '', ''],
+                    [R , Y , R , Y , R , Y , ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', R , R , Y , '', ''],
+                    ['', R , Y , Y , Y , '', ''],
+                    [R , Y , R , Y , R , Y , ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', R , Y ],
+                    ['', '', '', '', R , Y , R ],
+                    ['', Y , Y , R , Y , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(6);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', R , Y ],
+                    ['', '', '', '', R , Y , R ],
+                    ['', Y , Y , R , Y , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(6);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', Y ],
+                    ['', '', '', '', '', Y , Y ],
+                    ['', '', '', '', '', Y , R ],
+                    ['', '', '', R , R , R , Y ],
+                    ['', '', R , Y , R , Y , R ],
+                    ['', R , R , Y , Y , Y , R ],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(4);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            afterEach(() => {
+
+                testGameBoard = undefined;
+                testGameState = undefined;
+                Utilities.removeAllChildNodes(document.body);
+
+            });
+        });
+
+        describe('Top left diagonal win', () => {
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    [Y , '', '', '', '', '', ''],
+                    [R , Y , '', '', '', '', ''],
+                    [R , R , Y , '', '', '', ''],
+                    [Y , R , Y , '', '', '', ''],
+                    [R , Y , R , Y , '', '', ''],
+                    [R , Y , R , Y , R , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    [Y , '', '', '', '', '', ''],
+                    [R , Y , '', '', '', '', ''],
+                    [R , R , Y , '', '', '', ''],
+                    [Y , R , Y , '', '', '', ''],
+                    [R , Y , R , Y , '', '', ''],
+                    [R , Y , R , Y , R , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should flag a game win by red', () => {
+
+                let board = [
+                    [R , '', '', '', '', '', ''],
+                    [Y , R , '', '', '', '', ''],
+                    [R , Y , R , '', '', '', ''],
+                    [Y , R , Y , '', '', '', ''],
+                    [R , Y , R , R , '', '', ''],
+                    [Y , R , Y , Y , R , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    [R , '', '', '', '', '', ''],
+                    [Y , R , '', '', '', '', ''],
+                    [R , Y , R , '', '', '', ''],
+                    [Y , R , Y , '', '', '', ''],
+                    [R , Y , R , R , '', '', ''],
+                    [Y , R , Y , Y , R , '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            afterEach(() => {
+
+                testGameBoard = undefined;
+                testGameState = undefined;
+                Utilities.removeAllChildNodes(document.body);
+
+            });
+        });
+
+        describe('no wins (misc.)', () => {
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should not flag a game win by red', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', Y , R , '', ''],
+                    ['', '', Y , Y , R, '' , ''],
+                    ['', '', Y , R , Y , R , ''],
+                    [R , Y , R , Y , Y , R , ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('red');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            it('Should not flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', R , '', '', ''],
+                    ['', '', '', Y , R , '', ''],
+                    ['', '', Y , Y , R, '' , ''],
+                    ['', '', Y , R , Y , R , ''],
+                    [R , Y , R , Y , Y , R , ''],
+                ];
+
+                boardSetup(board);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(4);
+                expect(testGameState.getWinStatus()).not.toEqual(true);
+            });
+
+            afterEach(() => {
+
+                testGameBoard = undefined;
+                testGameState = undefined;
+                Utilities.removeAllChildNodes(document.body);
+
+            });
+        });
+
     });
 });
