@@ -24,6 +24,24 @@ h1 {
     color: rgb(48, 97, 170);
     text-decoration: underline;
 }
+.status-board {
+    font-size: 2rem;
+    width: 80%;
+    height: 100px;
+    background-color: rgba(48, 76, 129, 0.322);
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#player-display {
+    font-size: 1.5rem;
+    color: rgb(190, 190, 190);
+}
 
 .game-board-selector {
     display: flex;

@@ -29,7 +29,7 @@ gameBoard.initialize(gameState);
 gameState.initialize(gameBoard);
 selectionBar.initialize(gameBoard, gameState);
 
-
+gameState.addStatusBoardToDOM();
 selectionBar.addToDOM();
 gameBoard.addToDOM();
 

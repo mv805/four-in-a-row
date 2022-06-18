@@ -9,7 +9,21 @@ export const GameState = () => {
     const playerRed = Player('red');
     let lastMove;
 
+    let gameStatusBoard = document.createElement('div');
+    gameStatusBoard.classList.add('status-board');
+    let gameStatusText = document.createElement('div');
+    let currentPlayerDisplay = document.createElement('div');
+    currentPlayerDisplay.id = 'player-display';
+    gameStatusBoard.appendChild(gameStatusText);
+    gameStatusBoard.appendChild(currentPlayerDisplay);
+
     let currentPlayer = playerYellow;
+    gameStatusText.textContent = `Current Player:`;
+    currentPlayerDisplay.textContent = `${currentPlayer.getPlayerColor()}`;
+
+    const addStatusBoardToDOM = () => {
+        document.body.appendChild(gameStatusBoard);
+    };
 
     const setLastMove = (row, column) => {
         lastMove = [row, column];
@@ -17,18 +31,27 @@ export const GameState = () => {
 
     const placeAChecker = (column) => {
         gameBoard.placeCheckerAndRecordLast(column, currentPlayer.getPlayerColor());
-        _updateWinStatus(gameBoard.checkForFourInARow(lastMove[0], lastMove[1], currentPlayer.getPlayerColor()));
-        _togglePlayer();
-    };
-
-    const _updateWinStatus = (fourInARow) => {
-
-        if (fourInARow) {
+        if (gameBoard.checkForFourInARow(lastMove[0], lastMove[1], currentPlayer.getPlayerColor())){
             gameWon = true;
-            console.log('Winner:', currentPlayer.getPlayerColor());
         };
 
+        if (gameWon) {
+            gameStatusText.textContent = `${currentPlayer.getPlayerColor()} Wins!`;
+            gameStatusText.style.color = currentPlayer.getPlayerColor();
+            currentPlayerDisplay.textContent = '';
+        } else {
+            _togglePlayer();
+            currentPlayerDisplay.textContent = `${currentPlayer.getPlayerColor()}`;
+        };
     };
+
+    // const _updateWinStatus = (fourInARow) => {
+
+    //     if (fourInARow) {
+            
+    //     };
+
+    // };
 
     const _togglePlayer = () => {
 
@@ -37,7 +60,6 @@ export const GameState = () => {
         } else {
             currentPlayer = playerYellow;
         };
-        console.log('toggled to:',currentPlayer.getPlayerColor());
 
     };
 
@@ -57,7 +79,7 @@ export const GameState = () => {
 
         if (playerColor === 'yellow') {
             currentPlayer = playerYellow;
-        } else if (playerColor === 'red'){
+        } else if (playerColor === 'red') {
             currentPlayer = playerRed;
         };
     };
@@ -69,6 +91,7 @@ export const GameState = () => {
         setCurrentPlayer,
         placeAChecker,
         initialize,
+        addStatusBoardToDOM,
     };
 
 };
