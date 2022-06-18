@@ -5,7 +5,6 @@
 // clear GameBoard
 import _ from 'lodash';
 import { Checker } from "./checker";
-import { GameState } from "./game-state";
 
 export const GameBoard = (initialBoardArray) => {
 
