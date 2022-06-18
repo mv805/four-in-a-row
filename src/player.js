@@ -2,10 +2,8 @@ import { Checker } from '../src/checker.js';
 
 export const Player = (colorOfChecker) => {
 
-    let playerChecker = Checker(colorOfChecker);
-
     const getCheckerElement = () => {
-        return playerChecker.getElement();
+        return Checker(colorOfChecker).getElement();
     };
 
     const getPlayerColor = () => {
