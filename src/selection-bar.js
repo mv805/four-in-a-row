@@ -80,7 +80,6 @@ export const SelectionBar = () => {
         let lastSelectedBox = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
 
         if (!currentColumnSelection) {
-            console.log('selection wasnt initialized');
             makeSelectedCurrentSelection(selectedBox);
             return;
         } else if (currentColumnSelection === selectedBox.getAttribute('data-col-select')) {
