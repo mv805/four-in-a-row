@@ -56,7 +56,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -73,7 +73,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -90,7 +90,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -107,7 +107,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -124,7 +124,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(6);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -141,7 +141,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(6);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             afterEach(() => {
@@ -169,7 +169,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -186,7 +186,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -203,7 +203,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -220,7 +220,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by yellow', () => {
@@ -237,7 +237,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -254,7 +254,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -271,7 +271,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -288,7 +288,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by yellow', () => {
@@ -305,7 +305,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(1);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should flag a game win by yellow', () => {
@@ -322,7 +322,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(5);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             afterEach(() => {
@@ -350,7 +350,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -367,7 +367,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -384,7 +384,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -401,7 +401,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -418,7 +418,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -435,7 +435,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -452,7 +452,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(4);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by yellow', () => {
@@ -469,7 +469,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -486,7 +486,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             afterEach(() => {
@@ -514,7 +514,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -531,7 +531,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
             it('Should flag a game win by red', () => {
 
@@ -547,7 +547,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -564,7 +564,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by yellow', () => {
@@ -581,7 +581,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -598,7 +598,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -615,7 +615,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -632,7 +632,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(0);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should flag a game win by yellow', () => {
@@ -649,7 +649,25 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(2);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
+            });
+
+            it('Should flag a game win by yellow', () => {
+
+                let board = [
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', '', '', '', ''],
+                    ['', '', '', R , Y , '', ''],
+                    [R , '', '', Y , Y , Y , ''],
+                    [R , '', R , R , R , Y , Y ],
+                ];
+
+                boardSetup(board);
+                expect(testGameState.getWinStatus()).toBe(false);
+                testGameState.setCurrentPlayer('yellow');
+                testGameState.placeAChecker(3);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             afterEach(() => {
@@ -677,7 +695,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -694,7 +712,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -711,7 +729,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -728,7 +746,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -745,7 +763,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(6);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -762,7 +780,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(6);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -779,7 +797,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(4);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             afterEach(() => {
@@ -807,7 +825,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -824,7 +842,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should flag a game win by red', () => {
@@ -841,7 +859,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).toEqual(true);
+                expect(testGameState.getWinStatus()).toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -858,7 +876,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             afterEach(() => {
@@ -885,7 +903,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -902,7 +920,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should not flag a game win by red', () => {
@@ -919,7 +937,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('red');
                 testGameState.placeAChecker(3);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             it('Should not flag a game win by yellow', () => {
@@ -936,7 +954,7 @@ describe('GameState object behavior', () => {
                 boardSetup(board);
                 testGameState.setCurrentPlayer('yellow');
                 testGameState.placeAChecker(4);
-                expect(testGameState.getWinStatus()).not.toEqual(true);
+                expect(testGameState.getWinStatus()).not.toBe(true);
             });
 
             afterEach(() => {
