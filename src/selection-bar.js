@@ -1,6 +1,6 @@
 
 import { GameState } from '../src/game-state.js';
-import * as Utilities from '../src/util.js'
+import * as Utilities from '../src/util.js';
 import { GameBoard } from './game-board.js';
 
 export const SelectionBar = () => {
@@ -13,7 +13,7 @@ export const SelectionBar = () => {
     const gameBoardSelectorBar = document.createElement('div');
     gameBoardSelectorBar.innerHTML = `
     <div class="game-board-selector">
-        <div class="selection-bar slot">
+        <div class="selection-bar-active slot">
             <div data-col-select="0"></div>
             <div data-col-select="1"></div>
             <div data-col-select="2"></div>
@@ -37,7 +37,11 @@ export const SelectionBar = () => {
         }
 
         gameState.placeAChecker(currentColumnSelection);
-        setSelectionBarState(true);
+
+        if (!gameState.getWinStatus()) {
+            setSelectionBarState(true);
+        }
+
     };
 
     const _setSubmitButtonEvent = (active) => {
@@ -77,7 +81,7 @@ export const SelectionBar = () => {
     const _selectBox = (e) => {
 
         let selectedBox = e.target.parentNode;
-        let lastSelectedBox = document.querySelector(`[data-col-select="${currentColumnSelection}"]`);
+        let lastSelectedBox = document.querySelector(`[data-col-select="${ currentColumnSelection }"]`);
 
         if (!currentColumnSelection) {
             makeSelectedCurrentSelection(selectedBox);
@@ -105,6 +109,8 @@ export const SelectionBar = () => {
     };
 
     const setSelectionBarState = (active) => {
+
+        console.log('setting bar state', active);
         //turn off or turn on all the normal selection events for the selection boxes
         selectionBoxes.forEach(element => {
             _setCheckerImageOnHoverEvent(active, element);
@@ -117,10 +123,18 @@ export const SelectionBar = () => {
                 element.addEventListener('click', _selectBox);
             } else if (!active) {
                 element.removeEventListener('click', _selectBox);
+                // element.classList.remove('selection-bar-active');
+                // element.classList.add('selection-bar-inactive');
             };
             Utilities.removeAllChildNodes(element);
+
         });
 
+        if (!active) {
+            let selectionBarContainer = document.body.querySelector('.selection-bar-active');
+            selectionBarContainer.classList.remove('selection-bar-active');
+            selectionBarContainer.classList.add('selection-bar-inactive');
+        }
     };
 
     const addToDOM = () => {

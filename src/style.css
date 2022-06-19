@@ -21,12 +21,18 @@ body {
 }
 
 h1 {
-    color: rgb(48, 97, 170);
-    text-decoration: underline;
+    color: rgb(255, 255, 255);
+    background-color: #000000;
+    line-height: 1.5;
+    padding: 1rem 7rem;
+    font-size: 3rem;
+    border-radius: 10px;
+    text-align: center;
 }
 .status-board {
     font-size: 2rem;
     width: 80%;
+    max-width: 600px;
     height: 100px;
     background-color: rgba(48, 76, 129, 0.322);
     border-radius: 1rem;
@@ -56,7 +62,7 @@ h1 {
     margin-bottom: 1rem;
 }
 
-.selection-bar {
+.selection-bar-active {
     height: 85%;
     width: 80%;
     display: grid;
@@ -64,15 +70,30 @@ h1 {
     gap: 5px;
 }
 
-.selection-bar div {
+.selection-bar-active div {
     border-radius: 5px;
     background-color: rgba(48, 77, 129, 0.623);
     border: 2px solid rgba(0, 128, 0, 0);
 }
 
-.selection-bar div:hover {
+.selection-bar-active div:hover {
     border-color: rgb(54, 114, 245);
 }
+
+.selection-bar-inactive {
+    height: 85%;
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.selection-bar-inactive div {
+    border-radius: 5px;
+    background-color: rgba(48, 77, 129, 0.623);
+    border: 2px solid rgba(0, 128, 0, 0);
+}
+
 #submit-move {
     margin-bottom: 1rem;
     padding: .5rem 2rem;

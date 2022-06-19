@@ -1,13 +1,13 @@
 import { Player } from '../src/player.js';
-import { GameBoard } from './game-board.js';
 
 export const GameState = () => {
 
+    let selectionBar;
     let gameBoard;
     let gameWon = false;
+    let lastMove;
     const playerYellow = Player('yellow');
     const playerRed = Player('red');
-    let lastMove;
 
     let gameStatusBoard = document.createElement('div');
     gameStatusBoard.classList.add('status-board');
@@ -19,7 +19,7 @@ export const GameState = () => {
 
     let currentPlayer = playerYellow;
     gameStatusText.textContent = `Current Player:`;
-    currentPlayerDisplay.textContent = `${currentPlayer.getPlayerColor()}`;
+    currentPlayerDisplay.textContent = `${ currentPlayer.getPlayerColor() }`;
 
     const addStatusBoardToDOM = () => {
         document.body.appendChild(gameStatusBoard);
@@ -31,27 +31,33 @@ export const GameState = () => {
 
     const placeAChecker = (column) => {
         gameBoard.placeCheckerAndRecordLast(column, currentPlayer.getPlayerColor());
-        if (gameBoard.checkForFourInARow(lastMove[0], lastMove[1], currentPlayer.getPlayerColor())){
-            gameWon = true;
-        };
+        _checkWinStatus();
 
         if (gameWon) {
-            gameStatusText.textContent = `${currentPlayer.getPlayerColor()} Wins!`;
-            gameStatusText.style.color = currentPlayer.getPlayerColor();
-            currentPlayerDisplay.textContent = '';
+            _shutDownGame();
         } else {
             _togglePlayer();
-            currentPlayerDisplay.textContent = `${currentPlayer.getPlayerColor()}`;
-        };
+            currentPlayerDisplay.textContent = `${ currentPlayer.getPlayerColor() }`;
+        }
+
     };
 
-    // const _updateWinStatus = (fourInARow) => {
+    const _checkWinStatus = () => {
 
-    //     if (fourInARow) {
-            
-    //     };
+        if (gameBoard.checkForFourInARow(lastMove[0], lastMove[1], currentPlayer.getPlayerColor())) {
+            gameWon = true;
+            console.log('win status:', gameWon);
+            gameStatusText.textContent = `${ currentPlayer.getPlayerColor() } Wins!`;
+            gameStatusText.style.color = currentPlayer.getPlayerColor();
+            currentPlayerDisplay.textContent = '';
+        }
 
-    // };
+    };
+
+    const _shutDownGame = () => {
+        console.log('shutdown game', selectionBar);
+        selectionBar.setSelectionBarState(false);
+    };
 
     const _togglePlayer = () => {
 
@@ -59,7 +65,7 @@ export const GameState = () => {
             currentPlayer = playerRed;
         } else {
             currentPlayer = playerYellow;
-        };
+        }
 
     };
 
@@ -67,8 +73,9 @@ export const GameState = () => {
         return currentPlayer;
     };
 
-    const initialize = (GameBoard) => {
+    const initialize = (GameBoard, SelectionBar) => {
         gameBoard = GameBoard;
+        selectionBar = SelectionBar;
     };
 
     const getWinStatus = () => {
@@ -81,7 +88,7 @@ export const GameState = () => {
             currentPlayer = playerYellow;
         } else if (playerColor === 'red') {
             currentPlayer = playerRed;
-        };
+        }
     };
 
     return {
