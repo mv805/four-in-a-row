@@ -72,7 +72,7 @@ export const GameBoard = (initialBoardArray) => {
         for (let row = gameBoardArray.length - 1; row >= 0; row--) {
             if (gameBoardArray[row][columnOfDrop] === '') {
                 gameBoardArray[row][columnOfDrop] = Checker(playerColor);
-                let gridBoxToUpdate = document.body.querySelector(`[data-row="${row}"][data-col="${columnOfDrop}"]`);
+                let gridBoxToUpdate = document.body.querySelector(`[data-row="${ row }"][data-col="${ columnOfDrop }"]`);
                 gridBoxToUpdate.appendChild(gameBoardArray[row][columnOfDrop].getElement());
                 gameState.setLastMove(row, columnOfDrop);
                 return;
@@ -85,7 +85,7 @@ export const GameBoard = (initialBoardArray) => {
         //for placing a checker straight into cell. For initialization only.
         //the placeCheckerInColumn function simulates dropping a checker from the top and falling into place and should be used for game placement
 
-        let gridBoxToUpdate = document.body.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+        let gridBoxToUpdate = document.body.querySelector(`[data-row="${ row }"][data-col="${ col }"]`);
         gridBoxToUpdate.appendChild(checker.getElement());
     };
 
@@ -179,12 +179,21 @@ export const GameBoard = (initialBoardArray) => {
 
         //check to the bottom and right diagonal of the pivot
         if (rowIndex <= 2 && colIndex <= 3) {
+
             rowTraverse = rowIndex;
-            for (let col = colIndex; col <= colIndex + 3; col++) {
+
+            for (let col = colIndex; col < colIndex + 4; col++) {
+
+                console.log(rowTraverse, col);
+
+                if (rowTraverse >= 6) {
+                    break;
+                }
 
                 if (gameBoardArray[rowTraverse][col] !== '' && gameBoardArray[rowTraverse][col].getColor() === playerColor) {
                     checkersInARow++;
                     rowTraverse++;
+
                 } else {
                     break;
                 }
@@ -195,9 +204,9 @@ export const GameBoard = (initialBoardArray) => {
                 return true;
             } else {
                 checkersInARow = 0;
-            };
+            }
 
-        };
+        }
 
 
         //check to the bottom and left diagonal of the pivot
