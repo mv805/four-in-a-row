@@ -1,7 +1,5 @@
 
-import { GameState } from '../src/game-state.js';
 import * as Utilities from '../src/util.js';
-import { GameBoard } from './game-board.js';
 
 export const SelectionBar = () => {
 
@@ -27,7 +25,6 @@ export const SelectionBar = () => {
 
     const submitMoveButton = document.createElement('button');
     submitMoveButton.textContent = 'Submit Move';
-    submitMoveButton.id = 'submit-move';
     submitMoveButton.classList.add('submit-move-inactive');
 
     const _submitMove = () => {
@@ -109,8 +106,6 @@ export const SelectionBar = () => {
     };
 
     const setSelectionBarState = (active) => {
-
-        console.log('setting bar state', active);
         //turn off or turn on all the normal selection events for the selection boxes
         selectionBoxes.forEach(element => {
             _setCheckerImageOnHoverEvent(active, element);
@@ -123,8 +118,6 @@ export const SelectionBar = () => {
                 element.addEventListener('click', _selectBox);
             } else if (!active) {
                 element.removeEventListener('click', _selectBox);
-                // element.classList.remove('selection-bar-active');
-                // element.classList.add('selection-bar-inactive');
             };
             Utilities.removeAllChildNodes(element);
 
