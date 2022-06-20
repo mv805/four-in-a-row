@@ -29,6 +29,25 @@ h1 {
     border-radius: 10px;
     text-align: center;
 }
+
+h1 > span:first-of-type {
+    color: rgb(255, 0, 0);
+}
+
+h1 > span:nth-child(2) {
+    color: yellow;
+}
+
+button {
+    margin-bottom: 1rem;
+    padding: .5rem 2rem;
+    font-family: inherit;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .status-board {
     font-size: 2rem;
     width: 80%;
@@ -37,6 +56,7 @@ h1 {
     background-color: rgba(48, 76, 129, 0.322);
     border-radius: 1rem;
     margin-bottom: 1rem;
+    border: 2px solid white;
     text-transform: uppercase;
     display: flex;
     flex-direction: column;
@@ -94,16 +114,6 @@ h1 {
     border: 2px solid rgba(0, 128, 0, 0);
 }
 
-#submit-move {
-    margin-bottom: 1rem;
-    padding: .5rem 2rem;
-    font-family: inherit;
-    font-size: 1.5rem;
-    border: none;
-    border-radius: 5px;
-    
-}
-
 .submit-move-inactive {
     background-color: var(--board-blue);
     color: rgb(17, 17, 63);
@@ -113,6 +123,29 @@ h1 {
     background-color: rgb(45, 135, 170);
     color: white;
 }
+
+.submit-move-active:hover {
+    background-color: rgb(76, 174, 212);
+}
+
+.submit-move-active:active {
+    background-color: rgb(170, 231, 255);
+}
+
+.restart-button {
+    background-color: rgb(58, 70, 184);
+    color: white;
+    margin-top: 1rem;
+}
+
+.restart-button:hover {
+    background-color: rgb(75, 89, 219);
+}
+
+.restart-button:active {
+    background-color: rgb(214, 218, 255);
+}
+
 .game-board-slots {
 
     width: 600px;
