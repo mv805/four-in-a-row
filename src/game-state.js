@@ -21,8 +21,21 @@ export const GameState = () => {
     gameStatusText.textContent = `Current Player:`;
     currentPlayerDisplay.textContent = `${ currentPlayer.getPlayerColor() }`;
 
+    let restartButton = document.createElement('button');
+    restartButton.textContent = 'Restart Game';
+    restartButton.classList.add('restart-button');
+
+    const _restartGame = () => {
+        window.location.reload();
+    };
+
     const addStatusBoardToDOM = () => {
         document.body.appendChild(gameStatusBoard);
+        restartButton.addEventListener('click', _restartGame);
+    };
+
+    const addRestartButtonToDOM = () => {
+        document.body.appendChild(restartButton);  
     };
 
     const setLastMove = (row, column) => {
@@ -49,6 +62,7 @@ export const GameState = () => {
             console.log('win status:', gameWon);
             gameStatusText.textContent = `${ currentPlayer.getPlayerColor() } Wins!`;
             gameStatusText.style.color = currentPlayer.getPlayerColor();
+            gameStatusBoard.style.borderColor = currentPlayer.getPlayerColor();
             currentPlayerDisplay.textContent = '';
         }
 
@@ -99,6 +113,7 @@ export const GameState = () => {
         placeAChecker,
         initialize,
         addStatusBoardToDOM,
+        addRestartButtonToDOM,
     };
 
 };
