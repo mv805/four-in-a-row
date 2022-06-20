@@ -49,6 +49,14 @@ button {
     cursor: pointer;
 }
 
+footer {
+    margin-top: auto;
+}
+
+footer > span {
+    color: rgb(126, 126, 126);
+}
+
 .status-board {
     font-size: 2rem;
     width: 80%;

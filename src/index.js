@@ -35,7 +35,16 @@ const runGame = (() => {
     selectionBar.addToDOM();
     gameBoard.addToDOM();
     gameState.addRestartButtonToDOM();
-
+    addFooter();
+    
 })();
+
+function addFooter() {
+    let footer = document.createElement('footer');
+    footer.innerHTML = `
+    <span>V. 1.0.0</span>
+    `;
+    document.body.appendChild(footer);  
+};
 
 
