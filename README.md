@@ -10,11 +10,11 @@ I replicated the classic Connect Four game where players alternate placing piece
 
 ### Screenshot
 
-![](./screenshot.PNG)
+![](../Screenshot.PNG)
 
 ### Links
 
-- Live Site URL: [Add live site URL here](https://mv805.github.io/four-in-a-row/)
+- Live Site URL: [https://mv805.github.io/four-in-a-row/](https://mv805.github.io/four-in-a-row/)
 
 ## My process
 
@@ -70,7 +70,7 @@ I did not consider Mobile optimization in this application, choosing to focus on
 
 ## Acknowledgments
 
-I have been following the cirriculum from the amazing website, The Odin Project. After learning about testing frameworks and further solidifying my Javascript skills, I decided to create this game in lieu of the 'Battleship' game project due to personal preference for the Connecto Four clone.
+I have been following the cirriculum from the amazing website, The Odin Project. After learning about testing frameworks and further solidifying my Javascript skills, I decided to create this game in lieu of the 'Battleship' game project due to personal preference for the Connect Four clone.
 
 [The Odin Project](https://theodinproject.com)
 
