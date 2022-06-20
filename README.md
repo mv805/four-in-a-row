@@ -10,7 +10,7 @@ I replicated the classic Connect Four game where players alternate placing piece
 
 ### Screenshot
 
-![](../Screenshot.PNG?raw=true "Four In a Row, Example Game")
+![](/Screenshot.PNG?raw=true "Four In a Row, Example Game")
 
 ### Links
 
