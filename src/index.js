@@ -8,30 +8,34 @@ import { GameBoard } from './game-board';
 import { Checker } from './checker';
 import { GameState } from './game-state';
 
-const header = document.createElement('h1');
-header.textContent = 'FOUR IN A ROW!';
-document.body.appendChild(header);
+const runGame = (() => {
 
-let initialBoard =  [
-    ['', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', ''],
-];
+    const header = document.createElement('h1');
+    header.innerHTML = '<span>FOUR</span> IN A <span>ROW!</span>';
+    document.body.appendChild(header);
 
-let gameBoard = GameBoard(initialBoard);
+    let initialBoard = [
+        ['', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', ''],
+        ['', '', '', '', '', '', ''],
+    ];
 
-let gameState = GameState();
-let selectionBar = SelectionBar();
-gameBoard.initialize(gameState);
-gameState.initialize(gameBoard);
-selectionBar.initialize(gameBoard, gameState);
+    let gameBoard = GameBoard(initialBoard);
+    let gameState = GameState();
+    let selectionBar = SelectionBar();
 
-gameState.addStatusBoardToDOM();
-selectionBar.addToDOM();
-gameBoard.addToDOM();
+    gameBoard.initialize(gameState);
+    gameState.initialize(gameBoard, selectionBar);
+    selectionBar.initialize(gameBoard, gameState);
 
+    gameState.addStatusBoardToDOM();
+    selectionBar.addToDOM();
+    gameBoard.addToDOM();
+    gameState.addRestartButtonToDOM();
+
+})();
 
 
