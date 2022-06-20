@@ -53,7 +53,7 @@ it('Should flag a game win by yellow', () => {
 
     boardSetup(board);
     testGameState.setCurrentPlayer('yellow');
-    testGameState.placeAChecker(3);
+    testGameState.placeAChecker(3);//The column to drop a piece( index 0)
     expect(testGameState.getWinStatus()).toBe(true);
 });
             
