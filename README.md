@@ -2,9 +2,7 @@
 
 ## Overview
 
-### The Project
-
-To build a playable game with pure Javascript. 
+### The Project 
 
 I replicated the classic Connect Four game where players alternate placing pieces until a winner is able to connect four in a row.
 
@@ -37,7 +35,7 @@ This project gave me a great opportunity to develop my application development a
 
 I built the project utilizing Webpack to further my understanding of this great tool and to take advantage of easy output and multiple module usage. 
 
-The greatest learning opportunity I had was to understand the true power of TDD with Jest. The hardest part of the game design was coming up with a win detection algorithm that could work reliably for all the extensive amount of possible cases. I was able to generate multiple simple test cases to ensure I captured all edge cases and was confident in the functionality without any manual testing whatsoever. In conjuction with the Chrome debug tools, I was able to quickly hunt down any problems and solve them in the algorithm quickly and efficiently. Doing manual testing would not even be a feasible alternative.
+The greatest learning opportunity I had was to understand the true power of TDD with Jest. The hardest part of the game design was coming up with a win detection algorithm that could work reliably for all the extensive amount of possible cases. I was able to generate multiple simple test cases to ensure I captured all edge cases and was confident in the functionality without any manual testing whatsoever. In conjuction with the Chrome debug tools, I was able to quickly hunt down any problems and solve them in the algorithm and efficiently. 
 
 Example test case:
 
