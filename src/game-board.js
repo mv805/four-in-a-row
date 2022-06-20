@@ -184,8 +184,6 @@ export const GameBoard = (initialBoardArray) => {
 
             for (let col = colIndex; col < colIndex + 4; col++) {
 
-                console.log(rowTraverse, col);
-
                 if (rowTraverse >= 6) {
                     break;
                 }
