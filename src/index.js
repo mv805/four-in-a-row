@@ -42,7 +42,7 @@ const runGame = (() => {
 function addFooter() {
     let footer = document.createElement('footer');
     footer.innerHTML = `
-    <span>V. 1.0.0</span>
+    <span>V. 1.0.0 </span><div>© 2022 <a href="https://github.com/mv805">Matt Villa</a> All rights reserved.</a></div>
     `;
     document.body.appendChild(footer);  
 };
