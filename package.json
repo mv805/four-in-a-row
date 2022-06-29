@@ -7,7 +7,8 @@
     "test": "jest",
     "test-webpack": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.prod.js",
-    "start": "webpack serve --open --config webpack.dev.js"
+    "start": "webpack serve --open --config webpack.dev.js",
+    "deploy": "git subtree push --prefix dist origin gh-pages"
   },
   "keywords": [],
   "author": "",
